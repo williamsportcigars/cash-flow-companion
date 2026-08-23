@@ -2,7 +2,7 @@
 // Caches the static shell for offline/instant launch. Never touches /api/*,
 // so state reads/writes always go straight to the network.
 
-const CACHE = "cfc-shell-v1";
+const CACHE = "cfc-shell-v2";
 const SHELL_ASSETS = [
   "/",
   "/index.html",
@@ -36,7 +36,29 @@ self.addEventListener("fetch", (event) => {
   const url = new URL(request.url);
   if (url.pathname.startsWith("/api/")) return; // always live, never cached
 
-  // Stale-while-revalidate for the app shell.
+  // The HTML document itself goes network-first: a fresh deploy should show
+  // up on the very next load, not wait on a stale cached shell to
+  // revalidate in the background. Falls back to cache when offline.
+  const isDocument =
+    request.mode === "navigate" ||
+    url.pathname === "/" ||
+    url.pathname === "/index.html";
+  if (isDocument) {
+    event.respondWith(
+      fetch(request)
+        .then((response) => {
+          if (response.ok) {
+            const copy = response.clone();
+            caches.open(CACHE).then((cache) => cache.put(request, copy));
+          }
+          return response;
+        })
+        .catch(() => caches.match(request))
+    );
+    return;
+  }
+
+  // Stale-while-revalidate for other shell assets (icons, manifest, etc).
   event.respondWith(
     caches.match(request).then((cached) => {
       const network = fetch(request)
