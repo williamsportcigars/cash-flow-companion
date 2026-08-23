@@ -1,0 +1,16 @@
+{
+  "name": "cash-flow-companion",
+  "compatibility_date": "2026-08-01",
+  "main": "src/index.js",
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "cash_flow_companion",
+      "database_id": "06dc5871-856b-4675-b811-d82b4761f3c2"
+    }
+  ]
+}
