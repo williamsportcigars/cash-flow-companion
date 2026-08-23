@@ -39,7 +39,8 @@
     <div class="card next" id="nextCard"></div>
     <div class="card">
       <div class="balanceRow"><div><div class="balanceLabel">Starting balance</div><div class="hint">Changes save automatically on this device.</div></div><input id="startBalance" class="startInput" inputmode="decimal"></div>
-      <div style="display:flex;justify-content:space-between;margin-top:18px;padding-top:14px;border-top:1px solid var(--line)"><span class="balanceLabel">Projected ending balance</span><span id="ending" class="stat money"></span></div>
+      <div style="display:flex;justify-content:space-between;margin-top:18px;padding-top:14px;border-top:1px solid var(--line)"><span class="balanceLabel">Current balance</span><span id="current" class="stat money" style="color:var(--mint)"></span></div>
+      <div style="display:flex;justify-content:space-between;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)"><span class="balanceLabel">Projected ending balance</span><span id="ending" class="stat money"></span></div>
     </div>
   </section>
 
@@ -170,8 +171,10 @@ function weekKey(s){let d=new Date(s+"T12:00:00");d.setDate(d.getDate()-((d.getD
 function weekLabel(s){let d=new Date(s+"T12:00:00"),e=new Date(d);e.setDate(d.getDate()+6);return d.toLocaleDateString("en-US",{month:"short",day:"numeric"})+" – "+e.toLocaleDateString("en-US",{month:"short",day:"numeric"})}
 function render(){
  document.getElementById("startBalance").value=Number(state.start).toFixed(2);
- let ev=[...state.events].sort((a,b)=>a.date.localeCompare(b.date)||a.id-b.id), bal=Number(state.start), groups={}, next=null;
- ev.forEach(e=>{e.running=bal+Number(e.amount);bal=e.running;if(!e.done&&e.kind!=="auto"&&e.note&&e.note!=="estimate") next=next||e;let k=weekKey(e.date);(groups[k]??=[]).push(e)});
+ let today=new Date().toISOString().slice(0,10);
+ let ev=[...state.events].sort((a,b)=>a.date.localeCompare(b.date)||a.id-b.id), bal=Number(state.start), current=Number(state.start), groups={}, next=null;
+ ev.forEach(e=>{e.running=bal+Number(e.amount);bal=e.running;if(e.date<=today) current=bal;if(!e.done&&e.kind!=="auto"&&e.note&&e.note!=="estimate") next=next||e;let k=weekKey(e.date);(groups[k]??=[]).push(e)});
+ document.getElementById("current").textContent=money(current);
  document.getElementById("ending").textContent=money(bal);
  document.getElementById("nextCard").innerHTML=next?`<div class="label">Next action needed</div><div class="title">${esc(next.desc)}</div><div class="meta">${fmtDate(next.date)} · <b>${money(next.amount)}</b><br>${esc(next.note)}</div>`:`<div class="label">All caught up</div><div class="title">No manual actions are waiting.</div><div class="meta">Automatic drafts and deposits stay visible below.</div>`;
  let html="", collapsed=JSON.parse(localStorage.getItem(KEY+"_collapsed")||"{}");
