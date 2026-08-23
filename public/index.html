@@ -32,7 +32,7 @@
 <div class="wrap">
   <header class="mast">
     <div><div class="eyebrow">The Tobacco Center</div><h1>Cash Flow Companion</h1><div class="sub">A practical cash calendar for keeping the shop ahead of the next draft, order, and deposit.</div></div>
-    <div class="actions"><button class="btn" id="exportBtn">Export backup</button><button class="btn" id="importBtn">Import</button><button class="btn" id="historyBtn">History</button><button class="btn" id="scorecardBtn">Bank Readiness</button><button class="btn primary" id="addTop">+ Add event</button><input id="fileInput" class="hidden" type="file" accept="application/json"></div>
+    <div class="actions"><button class="btn" id="exportBtn">Export backup</button><button class="btn" id="importBtn">Import</button><button class="btn" id="historyBtn">History</button><button class="btn" id="archiveBtn">Archive</button><button class="btn" id="scorecardBtn">Bank Readiness</button><button class="btn primary" id="addTop">+ Add event</button><input id="fileInput" class="hidden" type="file" accept="application/json"></div>
   </header>
 
   <section class="grid">
@@ -61,6 +61,13 @@
     <div class="hint" style="margin-bottom:10px">A snapshot is kept automatically before every save. Restoring one saves your current data first too, so it's never a dead end.</div>
     <div id="historyList" class="small">Loading…</div>
     <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:10px"><button class="btn" id="closeHistory">Close</button></div>
+  </section>
+
+  <section class="card add hidden" id="archiveCard">
+    <h3 style="margin-bottom:4px">Archived</h3>
+    <div class="hint" style="margin-bottom:14px">Events you check off move here automatically to keep your calendar focused on what's next — nothing here affects your balances, it's just out of the way. Uncheck one to bring it back.</div>
+    <div id="archiveList"></div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:16px"><button class="btn" id="closeArchive">Close</button></div>
   </section>
 
   <section class="card add hidden" id="scorecardCard">
@@ -169,6 +176,31 @@ function money(n){return new Intl.NumberFormat("en-US",{style:"currency",currenc
 function fmtDate(s){let d=new Date(s+"T12:00:00");return d.toLocaleDateString("en-US",{weekday:"short",month:"numeric",day:"numeric"})}
 function weekKey(s){let d=new Date(s+"T12:00:00");d.setDate(d.getDate()-((d.getDay()+6)%7));return d.toISOString().slice(0,10)}
 function weekLabel(s){let d=new Date(s+"T12:00:00"),e=new Date(d);e.setDate(d.getDate()+6);return d.toLocaleDateString("en-US",{month:"short",day:"numeric"})+" – "+e.toLocaleDateString("en-US",{month:"short",day:"numeric"})}
+// One row template shared by the main calendar and the Archive list, so a
+// checked-off event looks and behaves identically in both places — the
+// checkbox itself IS the archive/restore control (checked = archived).
+function eventRowHtml(e){
+ let tight=e.running<500;
+ return `<div class="event ${tight?"tight":""}" data-id="${e.id}">
+ <div class="date">${fmtDate(e.date)}</div>
+ <div><div class="desc"><span class="descText" data-editdesc="${e.id}" title="Click to edit">${esc(e.desc)}</span> <span class="tag ${e.kind==="auto"?"auto":e.amount<0?"action":""}">${e.kind==="auto"?"AUTO":e.amount<0?"ACTION":"IN"}</span></div><div class="note">${esc(e.note)}${tight?' · <b>Balance under $500</b>':''}</div></div>
+ <div class="amt ${e.amount>0?"in":e.amount<0?"out":"zero"}" data-edit="${e.id}">${money(e.amount)}<div class="small">bal ${money(e.running)}</div></div>
+ <input class="check" type="checkbox" ${e.done?"checked":""} data-check="${e.id}">
+ <button class="delBtn" type="button" data-del="${e.id}" title="Delete event" aria-label="Delete ${esc(e.desc)}">✕</button>
+ </div>`;
+}
+// Wires up the interactive bits of whatever event rows currently live in
+// `container` — used for both the main calendar and the Archive list.
+function wireEventRows(container){
+ container.querySelectorAll("[data-week]").forEach(b=>b.onclick=()=>{let c=JSON.parse(localStorage.getItem(KEY+"_collapsed")||"{}");c[b.dataset.week]=!c[b.dataset.week];localStorage.setItem(KEY+"_collapsed",JSON.stringify(c));render()});
+ container.querySelectorAll("[data-check]").forEach(c=>c.onchange=()=>{
+   let e=state.events.find(x=>x.id==c.dataset.check);e.done=c.checked;save();render();
+   if(!document.getElementById("archiveCard").classList.contains("hidden"))renderArchive();
+ });
+ container.querySelectorAll("[data-edit]").forEach(a=>a.onclick=()=>editAmount(a));
+ container.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>deleteEvent(+b.dataset.del));
+ container.querySelectorAll("[data-editdesc]").forEach(a=>a.onclick=()=>editDesc(a));
+}
 function render(){
  document.getElementById("startBalance").value=Number(state.start).toFixed(2);
  let today=new Date().toISOString().slice(0,10);
@@ -178,20 +210,27 @@ function render(){
  document.getElementById("ending").textContent=money(bal);
  document.getElementById("nextCard").innerHTML=next?`<div class="label">Next action needed</div><div class="title">${esc(next.desc)}</div><div class="meta">${fmtDate(next.date)} · <b>${money(next.amount)}</b><br>${esc(next.note)}</div>`:`<div class="label">All caught up</div><div class="title">No manual actions are waiting.</div><div class="meta">Automatic drafts and deposits stay visible below.</div>`;
  let html="", collapsed=JSON.parse(localStorage.getItem(KEY+"_collapsed")||"{}");
- Object.entries(groups).forEach(([wk,list])=>{let open=collapsed[wk]!==true;let weekEnd=list[list.length-1].running;html+=`<section class="week"><button class="weekHead" data-week="${wk}"><strong>${weekLabel(wk)}</strong><span class="wkbal">${money(weekEnd)} ${open?"▾":"▸"}</span></button><div class="weekBody ${open?"":"hidden"}">`;
- list.forEach(e=>{let tight=e.running<500;html+=`<div class="event ${tight?"tight":""}" data-id="${e.id}">
- <div class="date">${fmtDate(e.date)}</div>
- <div><div class="desc"><span class="descText" data-editdesc="${e.id}" title="Click to edit">${esc(e.desc)}</span> <span class="tag ${e.kind==="auto"?"auto":e.amount<0?"action":""}">${e.kind==="auto"?"AUTO":e.amount<0?"ACTION":"IN"}</span></div><div class="note">${esc(e.note)}${tight?' · <b>Balance under $500</b>':''}</div></div>
- <div class="amt ${e.amount>0?"in":e.amount<0?"out":"zero"}" data-edit="${e.id}">${money(e.amount)}<div class="small">bal ${money(e.running)}</div></div>
- <input class="check" type="checkbox" ${e.done?"checked":""} data-check="${e.id}">
- <button class="delBtn" type="button" data-del="${e.id}" title="Delete event" aria-label="Delete ${esc(e.desc)}">✕</button>
- </div>`});html+="</div></section>"});
+ // Checked-off events move to Archive and drop out of the main calendar —
+ // weekEnd is still computed from the FULL week (every event, archived or
+ // not), since that's the true cumulative balance; only which rows get
+ // drawn is filtered. A week that's entirely archived is skipped outright.
+ Object.entries(groups).forEach(([wk,list])=>{
+  let visible=list.filter(e=>!e.done);
+  if(!visible.length)return;
+  let open=collapsed[wk]!==true,weekEnd=list[list.length-1].running;
+  html+=`<section class="week"><button class="weekHead" data-week="${wk}"><strong>${weekLabel(wk)}</strong><span class="wkbal">${money(weekEnd)} ${open?"▾":"▸"}</span></button><div class="weekBody ${open?"":"hidden"}">`;
+  visible.forEach(e=>{html+=eventRowHtml(e)});
+  html+="</div></section>";
+ });
  document.getElementById("events").innerHTML=html;
- document.querySelectorAll("[data-week]").forEach(b=>b.onclick=()=>{let c=JSON.parse(localStorage.getItem(KEY+"_collapsed")||"{}");c[b.dataset.week]=!c[b.dataset.week];localStorage.setItem(KEY+"_collapsed",JSON.stringify(c));render()});
- document.querySelectorAll("[data-check]").forEach(c=>c.onchange=()=>{let e=state.events.find(x=>x.id==c.dataset.check);e.done=c.checked;save();render()});
- document.querySelectorAll("[data-edit]").forEach(a=>a.onclick=()=>editAmount(a));
- document.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>deleteEvent(+b.dataset.del));
- document.querySelectorAll("[data-editdesc]").forEach(a=>a.onclick=()=>editDesc(a));
+ wireEventRows(document.getElementById("events"));
+}
+function renderArchive(){
+ let el=document.getElementById("archiveList");
+ let items=state.events.filter(e=>e.done).sort((a,b)=>b.date.localeCompare(a.date)||b.id-a.id);
+ if(!items.length){el.innerHTML='<div class="empty">Nothing archived yet — check an item off in your calendar and it will move here.</div>';return}
+ el.innerHTML=items.map(eventRowHtml).join("");
+ wireEventRows(el);
 }
 function editDesc(el){
  let id=+el.dataset.editdesc,e=state.events.find(x=>x.id===id);if(!e)return;
@@ -217,7 +256,7 @@ function deleteEvent(id){
 function editAmount(el){let id=+el.dataset.edit,e=state.events.find(x=>x.id===id);if(!e)return;let input=document.createElement("input");input.value=Math.abs(e.amount).toFixed(2);el.innerHTML="";el.appendChild(input);input.focus();input.select();let done=false;let commit=()=>{if(done)return;done=true;let n=parseFloat(input.value);if(Number.isFinite(n)){e.amount=(e.amount<0?-1:1)*n;save()}render()};let cancel=()=>{if(done)return;done=true;render()};input.onblur=commit;input.onkeydown=x=>{if(x.key==="Enter")commit();if(x.key==="Escape")cancel()}}
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 document.getElementById("startBalance").onchange=e=>{let n=parseFloat(e.target.value);if(Number.isFinite(n)){state.start=n;save();render()}};
-document.getElementById("addTop").onclick=()=>{document.getElementById("historyCard").classList.add("hidden");document.getElementById("scorecardCard").classList.add("hidden");document.getElementById("monthFormCard").classList.add("hidden");document.getElementById("addCard").classList.remove("hidden");document.getElementById("newDate").value=new Date().toISOString().slice(0,10);document.getElementById("newDesc").focus()};
+document.getElementById("addTop").onclick=()=>{document.getElementById("historyCard").classList.add("hidden");document.getElementById("archiveCard").classList.add("hidden");document.getElementById("scorecardCard").classList.add("hidden");document.getElementById("monthFormCard").classList.add("hidden");document.getElementById("addCard").classList.remove("hidden");document.getElementById("newDate").value=new Date().toISOString().slice(0,10);document.getElementById("newDesc").focus()};
 document.getElementById("cancelAdd").onclick=()=>document.getElementById("addCard").classList.add("hidden");
 document.getElementById("saveAdd").onclick=()=>{let d=document.getElementById("newDate").value,desc=document.getElementById("newDesc").value.trim(),n=parseFloat(document.getElementById("newAmount").value),dir=document.getElementById("newDirection").value,note=document.getElementById("newNote").value.trim();if(!d||!desc||!Number.isFinite(n))return alert("Please enter a date, description, and amount.");state.events.push({id:Date.now(),date:d,desc,amount:dir==="out"?-Math.abs(n):Math.abs(n),note:note||"manual item",kind:dir==="out"?"action":"action",done:false,category:dir==="out"?"Vendor / Payment":"Deposit"});save();document.getElementById("addCard").classList.add("hidden");["newDesc","newAmount","newNote"].forEach(id=>document.getElementById(id).value="");render()};
 document.getElementById("exportBtn").onclick=()=>{let blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="cash-flow-companion-backup.json";a.click();URL.revokeObjectURL(a.href)};
@@ -249,8 +288,10 @@ async function loadHistory(){
     });
   }catch{list.innerHTML="<div class=\"hint\">Could not load history right now.</div>"}
 }
-document.getElementById("historyBtn").onclick=()=>{document.getElementById("addCard").classList.add("hidden");document.getElementById("scorecardCard").classList.add("hidden");document.getElementById("monthFormCard").classList.add("hidden");document.getElementById("historyCard").classList.remove("hidden");loadHistory()};
+document.getElementById("historyBtn").onclick=()=>{document.getElementById("addCard").classList.add("hidden");document.getElementById("archiveCard").classList.add("hidden");document.getElementById("scorecardCard").classList.add("hidden");document.getElementById("monthFormCard").classList.add("hidden");document.getElementById("historyCard").classList.remove("hidden");loadHistory()};
 document.getElementById("closeHistory").onclick=()=>document.getElementById("historyCard").classList.add("hidden");
+document.getElementById("archiveBtn").onclick=()=>{document.getElementById("addCard").classList.add("hidden");document.getElementById("historyCard").classList.add("hidden");document.getElementById("scorecardCard").classList.add("hidden");document.getElementById("monthFormCard").classList.add("hidden");document.getElementById("archiveCard").classList.remove("hidden");renderArchive()};
+document.getElementById("closeArchive").onclick=()=>document.getElementById("archiveCard").classList.add("hidden");
 
 // ---- Bank Readiness Scorecard ----
 function scMonths(){return state.scorecard.months}
@@ -435,7 +476,7 @@ document.getElementById("mMonth").onchange=()=>{
   if(v) fillMonthForm(autoDefaultsFor(v));
 };
 function closeMonthForm(){document.getElementById("monthFormCard").classList.add("hidden");document.getElementById("scorecardCard").classList.remove("hidden")}
-document.getElementById("scorecardBtn").onclick=()=>{document.getElementById("addCard").classList.add("hidden");document.getElementById("historyCard").classList.add("hidden");document.getElementById("monthFormCard").classList.add("hidden");document.getElementById("scorecardCard").classList.remove("hidden");renderScorecard()};
+document.getElementById("scorecardBtn").onclick=()=>{document.getElementById("addCard").classList.add("hidden");document.getElementById("historyCard").classList.add("hidden");document.getElementById("archiveCard").classList.add("hidden");document.getElementById("monthFormCard").classList.add("hidden");document.getElementById("scorecardCard").classList.remove("hidden");renderScorecard()};
 document.getElementById("closeScorecard").onclick=()=>document.getElementById("scorecardCard").classList.add("hidden");
 document.getElementById("logMonthBtn").onclick=()=>openMonthForm(null);
 document.getElementById("cancelMonth").onclick=()=>closeMonthForm();
