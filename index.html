@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#2b1b16">
+<title>Cash Flow Companion — The Tobacco Center</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600&family=Libre+Baskerville:wght@400;700&display=swap');
+:root{--bg:#241713;--bg2:#332019;--card:#f0e3c7;--card2:#e7d7b7;--ink:#2a211b;--muted:#766858;--brass:#b68a42;--brass2:#d2ab64;--sage:#687b64;--sagebg:#dce4d7;--burg:#7d3f42;--burgbg:#ead4d0;--line:#cdbb9b;--white:#fff9ed}
+*{box-sizing:border-box} body{margin:0;background:radial-gradient(circle at top,#3a251c 0,#241713 55%);color:var(--white);font-family:Inter,system-ui,sans-serif}
+.wrap{max-width:1120px;margin:auto;padding:20px 16px 60px}.mast{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin:12px 0 22px}.eyebrow{letter-spacing:.16em;text-transform:uppercase;font-size:11px;color:var(--brass2)}h1,h2,h3{font-family:"Libre Baskerville",Georgia,serif;margin:0}h1{font-size:clamp(26px,4vw,42px);line-height:1.1}.sub{color:#cdbda8;margin-top:8px;font-size:13px}.actions{display:flex;gap:8px;flex-wrap:wrap}.btn{border:1px solid #7e6347;background:#3b281f;color:#f5e8cd;border-radius:8px;padding:9px 12px;cursor:pointer;font-weight:600}.btn:hover{border-color:var(--brass2)}.btn.primary{background:var(--brass);color:#20150f;border-color:var(--brass)}.btn.danger{background:#5a2d2f;border-color:#8e5152}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}.card{background:var(--card);color:var(--ink);border:1px solid #a99372;border-radius:12px;box-shadow:0 10px 25px #160c0870;padding:18px}.next{border-left:5px solid var(--brass)}.next .label{color:var(--burg);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.12em}.next .title{font-family:"Libre Baskerville",Georgia,serif;font-size:18px;margin:7px 0}.next .meta{color:var(--muted);font-size:13px}.balanceRow{display:flex;align-items:center;justify-content:space-between;gap:15px}.balanceLabel{font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:700}.money{font-family:"DM Mono",monospace;color:#7e5b20}.startInput{font:500 24px "DM Mono",monospace;width:170px;border:0;border-bottom:2px solid var(--brass);background:transparent;color:var(--ink);outline:0;text-align:right}.stat{font:500 24px "DM Mono",monospace}.hint{font-size:12px;color:var(--muted);margin-top:6px}.week{margin:14px 0}.weekHead{width:100%;display:flex;justify-content:space-between;align-items:center;background:var(--card2);color:var(--ink);border:1px solid #a99372;border-radius:10px;padding:13px 15px;cursor:pointer}.weekHead strong{font-family:"Libre Baskerville",Georgia,serif}.weekHead .wkbal{font:500 14px "DM Mono",monospace}.weekBody{background:rgba(240,227,199,.98);border:1px solid #a99372;border-top:0;border-radius:0 0 10px 10px;overflow:hidden}.event{display:grid;grid-template-columns:88px minmax(0,1fr) 150px 30px;gap:12px;align-items:center;padding:12px 14px;border-bottom:1px solid var(--line);color:var(--ink)}.event:last-child{border-bottom:0}.date{font-family:"DM Mono",monospace;font-size:12px;color:var(--muted)}.desc{font-weight:600}.note{font-size:11px;color:var(--muted);margin-top:3px}.tag{display:inline-block;margin-left:6px;font-size:10px;padding:2px 6px;border-radius:20px;background:#d9c9aa;color:#58462f}.tag.auto{background:var(--sagebg);color:#496047}.tag.action{background:#ead8bc;color:#765321}.tag.warn{background:var(--burgbg);color:#713639}.amt{text-align:right;font:500 14px "DM Mono",monospace;cursor:text}.amt.in{color:#6f5723}.amt.out{color:#8a3436}.amt.zero{color:var(--muted)}.amt input{width:115px;text-align:right;font:500 14px "DM Mono",monospace;background:var(--white);border:1px solid var(--brass);border-radius:5px;padding:5px}.check{width:18px;height:18px;accent-color:var(--sage)}.tight{background:var(--burgbg)}.tight .date,.tight .note{color:#713639}.empty{padding:30px;text-align:center;color:var(--muted)}.add{margin:18px 0}.formgrid{display:grid;grid-template-columns:140px 1fr 130px 120px 1fr;gap:9px}.input,.select{width:100%;padding:10px;border:1px solid #b49d7b;border-radius:7px;background:#fff8e9;color:var(--ink);font:inherit}.small{font-size:11px;color:var(--muted)}.footer{color:#8e7964;text-align:center;font-size:11px;margin-top:22px}.hidden{display:none!important}@media(max-width:760px){.mast{align-items:flex-start;flex-direction:column}.grid{grid-template-columns:1fr}.formgrid{grid-template-columns:1fr 1fr}.event{grid-template-columns:70px minmax(0,1fr) 105px 24px;gap:7px;padding:11px 9px}.desc{font-size:13px}.note{font-size:10px}.amt{font-size:12px}.startInput{width:145px;font-size:21px}.weekHead{padding:11px 12px}.wrap{padding:15px 10px 45px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="mast">
+    <div><div class="eyebrow">The Tobacco Center</div><h1>Cash Flow Companion</h1><div class="sub">A practical cash calendar for keeping the shop ahead of the next draft, order, and deposit.</div></div>
+    <div class="actions"><button class="btn" id="exportBtn">Export backup</button><button class="btn" id="importBtn">Import</button><button class="btn primary" id="addTop">+ Add event</button><input id="fileInput" class="hidden" type="file" accept="application/json"></div>
+  </header>
+
+  <section class="grid">
+    <div class="card next" id="nextCard"></div>
+    <div class="card">
+      <div class="balanceRow"><div><div class="balanceLabel">Starting balance</div><div class="hint">Changes save automatically on this device.</div></div><input id="startBalance" class="startInput" inputmode="decimal"></div>
+      <div style="display:flex;justify-content:space-between;margin-top:18px;padding-top:14px;border-top:1px solid var(--line)"><span class="balanceLabel">Projected ending balance</span><span id="ending" class="stat money"></span></div>
+    </div>
+  </section>
+
+  <section class="card add hidden" id="addCard">
+    <h3 style="margin-bottom:12px">Add cash-flow event</h3>
+    <div class="formgrid">
+      <input id="newDate" class="input" type="date">
+      <input id="newDesc" class="input" placeholder="Description">
+      <input id="newAmount" class="input" type="number" step="0.01" placeholder="Amount">
+      <select id="newDirection" class="select"><option value="in">Money in</option><option value="out">Money out</option></select>
+      <input id="newNote" class="input" placeholder="Action needed / note">
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:10px"><button class="btn" id="cancelAdd">Cancel</button><button class="btn primary" id="saveAdd">Save event</button></div>
+  </section>
+
+  <main id="events"></main>
+  <div class="footer">Your schedule is stored locally in this browser. Use Export backup before changing devices.</div>
+</div>
+
+<script>
+const seed = [
+["2026-08-23","Cash deposit ($428 carried + $485 today)",913,"you deposit tonight","action"],
+["2026-08-24","Card deposit (Thu $869 + Fri $1,257 + Sat $678)",2804.40,"automatic","auto"],
+["2026-08-24","Forward Financing MCA draft",-707.25,"automatic","auto"],
+["2026-08-24","Payroll tax debit",-90.34,"automatic","auto"],
+["2026-08-24","General cigar inventory restock",-500,"order today","action"],
+["2026-08-24","KB payment",-700,"you send this — first thing Monday","action"],
+["2026-08-25","Card deposit (Sun sales, est.)",300,"automatic","auto"],
+["2026-08-25","Action Label (SO-001630)",-898,"tell Ryan to run it today","action"],
+["2026-08-26","Card deposit (Mon sales, est.)",468,"estimate","auto"],
+["2026-08-26","Chip payroll (AccountantsWorld)",-400,"automatic","auto"],
+["2026-08-27","Card deposit (Tue sales, est.)",468,"estimate","auto"],
+["2026-08-27","COTM cigars (6 boxes, COD)",-780,"order today — lead time before 9/4","action"],
+["2026-08-28","Card deposit (Wed sales, est.)",468,"estimate","auto"],
+["2026-08-31","Card deposit (Thu+Fri+Sat, est. — LLWS finals)",1404,"estimate","auto"],
+["2026-08-31","Forward Financing MCA draft",-707.25,"automatic","auto"],
+["2026-08-31","Payroll tax debit",-90.34,"automatic","auto"],
+["2026-08-31","General cigar inventory restock",-500,"order today","action"],
+["2026-09-01","Card deposit (Sun LLWS finale, est.)",468,"could run higher","auto"],
+["2026-09-01","LCA (net-30 cigars, due 1st)",-1325,"hard due date — pay today","action"],
+["2026-09-02","Card deposit (Mon sales, est.)",468,"estimate","auto"],
+["2026-09-02","Chip payroll (AccountantsWorld)",-400,"automatic","auto"],
+["2026-09-03","Card deposit (Tue sales, est.)",468,"estimate","auto"],
+["2026-09-04","Card deposit (Wed sales, est. — not COTM money)",468,"estimate","auto"],
+["2026-09-04","Rent (by check)",-1125,"due today","action"],
+["2026-09-04","COTM pickup, 25 members (cash lands Mon 9/7, not today)",0,"timing note only","auto"],
+["2026-09-07","Card deposit (Thu+Fri COTM $1,718+Sat, est.)",2654,"COTM cash lands here","action"],
+["2026-09-07","Forward Financing MCA draft",-707.25,"automatic","auto"],
+["2026-09-07","Payroll tax debit",-90.34,"automatic","auto"],
+["2026-09-07","General cigar inventory restock",-500,"order today","action"],
+["2026-09-07","Avowed Cigars (Inv 1339, 1379)",-1000,"pay today — after COTM cash arrives","action"],
+["2026-09-08","Card deposit (Sun sales, est.)",468,"estimate","auto"],
+["2026-09-09","Card deposit (Mon sales, est.)",468,"estimate","auto"],
+["2026-09-09","Chip payroll (AccountantsWorld)",-400,"automatic","auto"],
+["2026-09-10","Card deposit (Tue sales + Third Rule launch bump)",1118,"Third Rule bump lands here","auto"],
+["2026-09-10","KB remainder (clears $3,086 balance)",-2386,"pay today — after Third Rule bump arrives","action"],
+["2026-09-11","Card deposit (Wed sales, est.)",468,"estimate","auto"]
+];
+const KEY="ttc_cash_flow_companion_v2";
+let state={start:167.08,events:seed.map((x,i)=>({id:i+1,date:x[0],desc:x[1],amount:x[2],note:x[3],kind:x[4],done:false,category:x[4]==="auto"?"Automatic":(x[2]>=0?"Deposit":"Vendor / Payment")}))};
+let saveTimer=null;
+async function save(){
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(async()=>{
+    try{
+      const r=await fetch("/api/state",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify(state)});
+      if(!r.ok) throw new Error();
+    }catch(e){ localStorage.setItem(KEY,JSON.stringify(state)); }
+  },150);
+}
+async function loadState(){
+  try{
+    const r=await fetch("/api/state");
+    if(r.ok){const x=await r.json(); if(x && Array.isArray(x.events)){state=x; return;}}
+  }catch(e){}
+  const local=JSON.parse(localStorage.getItem(KEY)||"null");
+  if(local) state=local;
+}
+function money(n){return new Intl.NumberFormat("en-US",{style:"currency",currency:"USD"}).format(n)}
+function fmtDate(s){let d=new Date(s+"T12:00:00");return d.toLocaleDateString("en-US",{weekday:"short",month:"numeric",day:"numeric"})}
+function weekKey(s){let d=new Date(s+"T12:00:00");d.setDate(d.getDate()-((d.getDay()+6)%7));return d.toISOString().slice(0,10)}
+function weekLabel(s){let d=new Date(s+"T12:00:00"),e=new Date(d);e.setDate(d.getDate()+6);return d.toLocaleDateString("en-US",{month:"short",day:"numeric"})+" – "+e.toLocaleDateString("en-US",{month:"short",day:"numeric"})}
+function render(){
+ document.getElementById("startBalance").value=Number(state.start).toFixed(2);
+ let ev=[...state.events].sort((a,b)=>a.date.localeCompare(b.date)||a.id-b.id), bal=Number(state.start), groups={}, next=null;
+ ev.forEach(e=>{e.running=bal+Number(e.amount);bal=e.running;if(!e.done&&e.kind!=="auto"&&e.note&&e.note!=="estimate") next=next||e;let k=weekKey(e.date);(groups[k]??=[]).push(e)});
+ document.getElementById("ending").textContent=money(bal);
+ document.getElementById("nextCard").innerHTML=next?`<div class="label">Next action needed</div><div class="title">${esc(next.desc)}</div><div class="meta">${fmtDate(next.date)} · <b>${money(next.amount)}</b><br>${esc(next.note)}</div>`:`<div class="label">All caught up</div><div class="title">No manual actions are waiting.</div><div class="meta">Automatic drafts and deposits stay visible below.</div>`;
+ let html="", collapsed=JSON.parse(localStorage.getItem(KEY+"_collapsed")||"{}");
+ Object.entries(groups).forEach(([wk,list])=>{let open=collapsed[wk]!==true;let weekEnd=list[list.length-1].running;html+=`<section class="week"><button class="weekHead" data-week="${wk}"><strong>${weekLabel(wk)}</strong><span class="wkbal">${money(weekEnd)} ${open?"▾":"▸"}</span></button><div class="weekBody ${open?"":"hidden"}">`;
+ list.forEach(e=>{let tight=e.running<500;html+=`<div class="event ${tight?"tight":""}" data-id="${e.id}">
+ <div class="date">${fmtDate(e.date)}</div>
+ <div><div class="desc">${esc(e.desc)} <span class="tag ${e.kind==="auto"?"auto":e.amount<0?"action":""}">${e.kind==="auto"?"AUTO":e.amount<0?"ACTION":"IN"}</span></div><div class="note">${esc(e.note)}${tight?' · <b>Balance under $500</b>':''}</div></div>
+ <div class="amt ${e.amount>0?"in":e.amount<0?"out":"zero"}" data-edit="${e.id}">${money(e.amount)}<div class="small">bal ${money(e.running)}</div></div>
+ <input class="check" type="checkbox" ${e.done?"checked":""} data-check="${e.id}">
+ </div>`});html+="</div></section>"});
+ document.getElementById("events").innerHTML=html;
+ document.querySelectorAll("[data-week]").forEach(b=>b.onclick=()=>{let c=JSON.parse(localStorage.getItem(KEY+"_collapsed")||"{}");c[b.dataset.week]=!c[b.dataset.week];localStorage.setItem(KEY+"_collapsed",JSON.stringify(c));render()});
+ document.querySelectorAll("[data-check]").forEach(c=>c.onchange=()=>{let e=state.events.find(x=>x.id==c.dataset.check);e.done=c.checked;save();render()});
+ document.querySelectorAll("[data-edit]").forEach(a=>a.onclick=()=>editAmount(a));
+}
+function editAmount(el){let id=+el.dataset.edit,e=state.events.find(x=>x.id===id);if(!e)return;let input=document.createElement("input");input.value=Math.abs(e.amount).toFixed(2);el.innerHTML="";el.appendChild(input);input.focus();input.select();let commit=()=>{let n=parseFloat(input.value);if(Number.isFinite(n)){e.amount=(e.amount<0?-1:1)*n;save();render()}else render()};input.onblur=commit;input.onkeydown=x=>{if(x.key==="Enter")commit();if(x.key==="Escape")render()}}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+document.getElementById("startBalance").onchange=e=>{let n=parseFloat(e.target.value);if(Number.isFinite(n)){state.start=n;save();render()}};
+document.getElementById("addTop").onclick=()=>{document.getElementById("addCard").classList.remove("hidden");document.getElementById("newDate").value=new Date().toISOString().slice(0,10);document.getElementById("newDesc").focus()};
+document.getElementById("cancelAdd").onclick=()=>document.getElementById("addCard").classList.add("hidden");
+document.getElementById("saveAdd").onclick=()=>{let d=document.getElementById("newDate").value,desc=document.getElementById("newDesc").value.trim(),n=parseFloat(document.getElementById("newAmount").value),dir=document.getElementById("newDirection").value,note=document.getElementById("newNote").value.trim();if(!d||!desc||!Number.isFinite(n))return alert("Please enter a date, description, and amount.");state.events.push({id:Date.now(),date:d,desc,amount:dir==="out"?-Math.abs(n):Math.abs(n),note:note||"manual item",kind:dir==="out"?"action":"action",done:false,category:dir==="out"?"Vendor / Payment":"Deposit"});save();document.getElementById("addCard").classList.add("hidden");["newDesc","newAmount","newNote"].forEach(id=>document.getElementById(id).value="");render()};
+document.getElementById("exportBtn").onclick=()=>{let blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="cash-flow-companion-backup.json";a.click();URL.revokeObjectURL(a.href)};
+document.getElementById("importBtn").onclick=()=>document.getElementById("fileInput").click();
+document.getElementById("fileInput").onchange=e=>{let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let x=JSON.parse(r.result);if(x.start===undefined||!Array.isArray(x.events))throw 0;state=x;save();render()}catch{alert("That backup file could not be read.")}};r.readAsText(f)};
+loadState().then(render);
+</script>
+</body>
+</html>
