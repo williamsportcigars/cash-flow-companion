@@ -24,6 +24,7 @@
 .checklist{display:flex;flex-direction:column;gap:8px;margin-top:14px}.checkItem{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;border:1px solid var(--card-border);border-radius:8px;background:var(--jungle)}.checkIcon{font-size:16px;font-weight:700;width:20px;flex:none;text-align:center;line-height:1.4}.checkItem.pass .checkIcon{color:var(--mint)}.checkItem.fail .checkIcon{color:var(--warn-text)}.checkLabel{font-weight:600;font-size:14px}.checkDetail{font-size:11.5px;color:var(--dim);margin-top:3px;font-family:"DM Mono",monospace}.checkItem.fail .checkDetail{color:var(--warn-text)}
 .monthRow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}.monthRow:last-child{border-bottom:0}.monthLabel{font-family:"Playfair Display",Georgia,serif;font-weight:700;min-width:88px}.monthStats{color:var(--dim);flex:1;min-width:220px;font-family:"DM Mono",monospace;font-size:11px}
 .trendMetric{margin-top:16px}.trendTitle{font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--mint);font-weight:700;margin-bottom:8px}.trendRow{display:grid;grid-template-columns:64px 1fr 92px;gap:10px;align-items:center;margin-bottom:5px}.trendMonth{font-size:10px;color:var(--dim);font-family:"DM Mono",monospace}.trendBarTrack{background:rgba(255,255,255,.07);border-radius:4px;height:9px;overflow:hidden}.trendBar{background:linear-gradient(90deg,var(--mint),var(--gold));height:100%;border-radius:4px}.trendVal{font-size:11px;text-align:right;font-family:"DM Mono",monospace}
+.updateBanner{position:fixed;top:0;left:0;right:0;z-index:50;background:var(--jungle);border-bottom:1px solid var(--gold);box-shadow:0 6px 20px rgba(0,0,0,.4);padding:10px 16px;display:flex;align-items:center;justify-content:center;gap:12px;color:var(--warm-white);font-size:13px;font-family:"Josefin Sans",sans-serif;text-align:center}
 @media(max-width:760px){.mast{align-items:flex-start;flex-direction:column}.grid{grid-template-columns:1fr}.formgrid{grid-template-columns:1fr 1fr}.event{grid-template-columns:70px minmax(0,1fr) 105px 24px 22px;gap:7px;padding:11px 9px}.delBtn{width:22px;height:22px;font-size:12px}.desc{font-size:13px}.note{font-size:10px}.amt{font-size:12px}.startInput{width:145px;font-size:22px}.weekHead{padding:11px 12px}.wrap{padding:15px 10px 45px}}
 </style>
 </head>
@@ -72,19 +73,20 @@
   </section>
 
   <section class="card add hidden" id="monthFormCard">
-    <h3 id="monthFormTitle" style="margin-bottom:12px">Log month data</h3>
+    <h3 id="monthFormTitle" style="margin-bottom:4px">Log month data</h3>
+    <div class="hint" style="margin-bottom:14px">Fields marked <b>est.</b> are pre-filled from your cash-flow calendar and prior months — check them against your actual bank/credit info before saving. YTD NOI has no in-app source and always needs your P&amp;L figure.</div>
     <div class="formgrid2">
       <div class="field"><label>Month</label><input id="mMonth" class="input" type="month"></div>
-      <div class="field"><label>YTD NOI ($)</label><input id="mNOI" class="input" type="number" step="0.01" placeholder="21108.89"></div>
-      <div class="field"><label>Period days (for NOI)</label><input id="mDays" class="input" type="number" step="1" placeholder="235"></div>
-      <div class="field"><label>Weekly debt service ($)</label><input id="mDebt" class="input" type="number" step="0.01" placeholder="707.25"></div>
+      <div class="field"><label>YTD NOI ($)</label><input id="mNOI" class="input" type="number" step="0.01" placeholder="from your P&amp;L"></div>
+      <div class="field"><label>Period days (for NOI) · est.</label><input id="mDays" class="input" type="number" step="1"></div>
+      <div class="field"><label>Weekly debt service ($) · est.</label><input id="mDebt" class="input" type="number" step="0.01"></div>
       <div class="field"><label>Overdraft fees this month</label><input id="mODFees" class="input" type="number" step="1" placeholder="0"></div>
-      <div class="field"><label>Zero-OD streak (weeks)</label><input id="mZeroODWeeks" class="input" type="number" step="1" placeholder="8"></div>
-      <div class="field"><label>Min daily balance, 60d ($)</label><input id="mMinBal" class="input" type="number" step="0.01" placeholder="500"></div>
-      <div class="field"><label>Monthly revenue ($)</label><input id="mRevenue" class="input" type="number" step="0.01" placeholder="15000"></div>
-      <div class="field"><label>Months since last derogatory</label><input id="mMonthsClean" class="input" type="number" step="1" placeholder="6"></div>
-      <div class="field"><label>MCA balance ($)</label><input id="mMcaBal" class="input" type="number" step="0.01" placeholder="12000"></div>
-      <div class="field"><label>MCA balance trend</label><select id="mMcaTrend" class="select"><option value="down">Down</option><option value="flat">Flat</option><option value="up">Up</option></select></div>
+      <div class="field"><label>Zero-OD streak (weeks) · est.</label><input id="mZeroODWeeks" class="input" type="number" step="1"></div>
+      <div class="field"><label>Min daily balance, 60d ($) · est.</label><input id="mMinBal" class="input" type="number" step="0.01"></div>
+      <div class="field"><label>Monthly revenue ($) · est.</label><input id="mRevenue" class="input" type="number" step="0.01"></div>
+      <div class="field"><label>Months since last derogatory</label><input id="mMonthsClean" class="input" type="number" step="1"></div>
+      <div class="field"><label>MCA balance ($) · est.</label><input id="mMcaBal" class="input" type="number" step="0.01" placeholder="starting balance"></div>
+      <div class="field"><label>MCA balance trend · est.</label><select id="mMcaTrend" class="select"><option value="down">Down</option><option value="flat">Flat</option><option value="up">Up</option></select></div>
       <div class="field checkField"><input id="mCUResolved" type="checkbox" class="check"><label for="mCUResolved">State Employees CU item resolved</label></div>
     </div>
     <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:14px"><button class="btn" id="cancelMonth">Cancel</button><button class="btn primary" id="saveMonth">Save month</button></div>
@@ -92,6 +94,11 @@
 
   <main id="events"></main>
   <div class="footer">Your schedule is saved to your account and available on any device. Recent saves are kept automatically — use History above to restore an earlier version, or Export backup for an offline copy.</div>
+</div>
+
+<div id="updateBanner" class="updateBanner hidden">
+  <span>A new version of this app is ready.</span>
+  <button class="btn primary" id="updateRefreshBtn" style="padding:6px 12px">Refresh</button>
 </div>
 
 <script>
@@ -326,15 +333,75 @@ function renderScorecard(){
   renderMonthHistory();
   renderTrends();
 }
-function openMonthForm(existing){
-  document.getElementById("scorecardCard").classList.add("hidden");
-  document.getElementById("monthFormCard").classList.remove("hidden");
-  document.getElementById("monthFormTitle").textContent = existing?`Edit ${monthLabel(existing.month)}`:"Log month data";
+// ---- Auto-fill helpers: derive sensible starting values from data the app
+// already has (the cash-flow event calendar + prior logged months), so most
+// months don't require typing every field from scratch. Anything derived
+// this way is a projection/estimate from the calendar, not a bank fact —
+// it's pre-filled as a real (white) value, same as a carried-forward field,
+// but the form's hint text says to confirm it before saving.
+function dayOfYearEndOfMonth(monthStr){
+  let [y,m]=monthStr.split("-").map(Number);
+  let monthEnd=new Date(y,m,0),start=new Date(y,0,1);
+  return Math.round((monthEnd-start)/86400000)+1;
+}
+function runningBalances(){
+  let ev=[...state.events].sort((a,b)=>a.date.localeCompare(b.date)||a.id-b.id),bal=Number(state.start);
+  return ev.map(e=>{bal+=Number(e.amount);return {date:e.date,desc:e.desc,kind:e.kind,amount:Number(e.amount),bal}});
+}
+function monthEventsRevenue(monthStr){
+  return state.events.filter(e=>e.date.startsWith(monthStr)&&Number(e.amount)>0).reduce((s,e)=>s+Number(e.amount),0);
+}
+function monthMcaDraftTotal(monthStr){
+  return state.events.filter(e=>e.date.startsWith(monthStr)&&Number(e.amount)<0&&/mca/i.test(e.desc)).reduce((s,e)=>s+Math.abs(Number(e.amount)),0);
+}
+function latestMcaDraftAmount(){
+  let matches=state.events.filter(e=>e.kind==="auto"&&Number(e.amount)<0&&/mca/i.test(e.desc)).sort((a,b)=>a.date.localeCompare(b.date));
+  return matches.length?Math.abs(matches[matches.length-1].amount):null;
+}
+function projectedMinBalanceTrailing60d(monthStr){
+  let monthEnd=new Date(monthStr+"-01T00:00:00");monthEnd.setMonth(monthEnd.getMonth()+1);monthEnd.setDate(0);
+  let windowStart=new Date(monthEnd);windowStart.setDate(windowStart.getDate()-59);
+  let min=null;
+  runningBalances().forEach(r=>{let d=new Date(r.date+"T12:00:00");if(d>=windowStart&&d<=monthEnd){if(min===null||r.bal<min)min=r.bal}});
+  return min;
+}
+function projectedZeroODStreak(monthStr){
+  let monthEnd=new Date(monthStr+"-01T00:00:00");monthEnd.setMonth(monthEnd.getMonth()+1);monthEnd.setDate(0);
+  let byWeek={};
+  runningBalances().forEach(r=>{let wk=weekKey(r.date);if(!(wk in byWeek)||r.bal<byWeek[wk])byWeek[wk]=r.bal});
+  let weeks=Object.keys(byWeek).filter(wk=>new Date(wk+"T12:00:00")<=monthEnd).sort();
+  let streak=0;
+  for(let i=weeks.length-1;i>=0;i--){if(byWeek[weeks[i]]>=0)streak++;else break}
+  return streak;
+}
+function round2(n){return Math.round(n*100)/100}
+function autoDefaultsFor(monthStr){
   let months=scMonths(),last=months[months.length-1];
-  let f=existing||{month:new Date().toISOString().slice(0,7),ytdNOI:"",periodDays:"",weeklyDebtService:last?last.weeklyDebtService:"",overdraftFeeCount:0,weeksZeroOD:0,minDailyBalance60d:"",monthlyRevenue:"",stateEmployeesCUResolved:false,monthsSinceLastDerogatory:0,mcaBalance:"",mcaBalanceTrend:"flat"};
+  let draft=latestMcaDraftAmount();
+  let minBal=projectedMinBalanceTrailing60d(monthStr);
+  let mcaBalance = last&&last.mcaBalance!==""&&last.mcaBalance!=null ? Math.max(0,round2(Number(last.mcaBalance)-monthMcaDraftTotal(monthStr))) : "";
+  let mcaTrend = "flat";
+  if(last && mcaBalance!==""){
+    if(mcaBalance<Number(last.mcaBalance)) mcaTrend="down";
+    else if(mcaBalance>Number(last.mcaBalance)) mcaTrend="up";
+  }
+  return {
+    month: monthStr,
+    ytdNOI: last?last.ytdNOI:"",
+    periodDays: dayOfYearEndOfMonth(monthStr),
+    weeklyDebtService: draft!=null?round2(draft):(last?last.weeklyDebtService:""),
+    overdraftFeeCount: 0,
+    weeksZeroOD: projectedZeroODStreak(monthStr),
+    minDailyBalance60d: minBal!=null?round2(minBal):(last?last.minDailyBalance60d:""),
+    monthlyRevenue: round2(monthEventsRevenue(monthStr)),
+    stateEmployeesCUResolved: last?!!last.stateEmployeesCUResolved:false,
+    monthsSinceLastDerogatory: last?Number(last.monthsSinceLastDerogatory)+1:0,
+    mcaBalance: mcaBalance,
+    mcaBalanceTrend: mcaTrend
+  };
+}
+function fillMonthForm(f){
   document.getElementById("mMonth").value=f.month;
-  document.getElementById("mMonth").disabled=!!existing;
-  document.getElementById("mMonth").dataset.orig=existing?existing.month:"";
   document.getElementById("mNOI").value=f.ytdNOI;
   document.getElementById("mDays").value=f.periodDays;
   document.getElementById("mDebt").value=f.weeklyDebtService;
@@ -347,6 +414,23 @@ function openMonthForm(existing){
   document.getElementById("mMcaTrend").value=f.mcaBalanceTrend;
   document.getElementById("mCUResolved").checked=!!f.stateEmployeesCUResolved;
 }
+function openMonthForm(existing){
+  document.getElementById("scorecardCard").classList.add("hidden");
+  document.getElementById("monthFormCard").classList.remove("hidden");
+  document.getElementById("monthFormTitle").textContent = existing?`Edit ${monthLabel(existing.month)}`:"Log month data";
+  document.getElementById("mMonth").disabled=!!existing;
+  document.getElementById("mMonth").dataset.orig=existing?existing.month:"";
+  if(existing){
+    fillMonthForm(existing);
+  }else{
+    fillMonthForm(autoDefaultsFor(new Date().toISOString().slice(0,7)));
+  }
+}
+document.getElementById("mMonth").onchange=()=>{
+  if(document.getElementById("mMonth").disabled)return; // editing an existing entry: month is locked, no re-derive
+  let v=document.getElementById("mMonth").value;
+  if(v) fillMonthForm(autoDefaultsFor(v));
+};
 function closeMonthForm(){document.getElementById("monthFormCard").classList.add("hidden");document.getElementById("scorecardCard").classList.remove("hidden")}
 document.getElementById("scorecardBtn").onclick=()=>{document.getElementById("addCard").classList.add("hidden");document.getElementById("historyCard").classList.add("hidden");document.getElementById("monthFormCard").classList.add("hidden");document.getElementById("scorecardCard").classList.remove("hidden");renderScorecard()};
 document.getElementById("closeScorecard").onclick=()=>document.getElementById("scorecardCard").classList.add("hidden");
@@ -381,11 +465,44 @@ document.getElementById("saveMonth").onclick=()=>{
 };
 
 loadState().then(render);
+
+// ---- Auto-update: detect a fresh deploy and pick it up without the user
+// having to remember to hard-refresh. Polls the live document (bypassing
+// HTTP cache) and diffs it against the copy that's currently running. If no
+// form is open (nothing unsaved to lose), it just reloads; otherwise it
+// waits, via a small banner, until the form closes.
+let baselineHtml=null, updateAvailable=false;
+function formsOpen(){
+  return ["addCard","historyCard","scorecardCard","monthFormCard"].some(id=>!document.getElementById(id).classList.contains("hidden"));
+}
+async function checkForUpdate(){
+  if(updateAvailable)return;
+  try{
+    let r=await fetch(location.pathname+location.search,{cache:"no-store"});
+    if(!r.ok)return;
+    let text=await r.text();
+    if(baselineHtml===null){baselineHtml=text;return}
+    if(text!==baselineHtml){
+      updateAvailable=true;
+      if(!formsOpen()) location.reload();
+      else document.getElementById("updateBanner").classList.remove("hidden");
+    }
+  }catch(e){}
+}
+document.getElementById("updateRefreshBtn").onclick=()=>location.reload();
+document.addEventListener("click",()=>{setTimeout(()=>{if(updateAvailable&&!formsOpen())location.reload()},0)});
+setTimeout(checkForUpdate,5000);
+setInterval(checkForUpdate,3*60*1000);
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")checkForUpdate()});
+window.addEventListener("focus",checkForUpdate);
 </script>
 <script>
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker.register("/sw.js").catch(() => {});
+  });
+  navigator.serviceWorker.addEventListener("controllerchange", () => {
+    if (typeof checkForUpdate === "function") checkForUpdate();
   });
 }
 </script>
