@@ -1,0 +1,17 @@
+{
+  "name": "Cash Flow Companion",
+  "short_name": "Cash Flow",
+  "description": "A practical cash calendar for keeping the shop ahead of the next draft, order, and deposit.",
+  "id": "/",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#241713",
+  "theme_color": "#2b1b16",
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

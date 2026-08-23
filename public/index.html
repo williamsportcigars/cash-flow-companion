@@ -4,6 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#2b1b16">
+<meta name="description" content="A practical cash calendar for keeping the shop ahead of the next draft, order, and deposit.">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/icons/icon-192.png" sizes="192x192" type="image/png">
+<link rel="icon" href="/icons/icon-512.png" sizes="512x512" type="image/png">
+<link rel="apple-touch-icon" href="/icons/icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Cash Flow">
+<meta name="mobile-web-app-capable" content="yes">
 <title>Cash Flow Companion — The Tobacco Center</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600&family=Libre+Baskerville:wght@400;700&display=swap');
@@ -135,6 +144,13 @@ document.getElementById("exportBtn").onclick=()=>{let blob=new Blob([JSON.string
 document.getElementById("importBtn").onclick=()=>document.getElementById("fileInput").click();
 document.getElementById("fileInput").onchange=e=>{let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let x=JSON.parse(r.result);if(x.start===undefined||!Array.isArray(x.events))throw 0;state=x;save();render()}catch{alert("That backup file could not be read.")}};r.readAsText(f)};
 loadState().then(render);
+</script>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/sw.js").catch(() => {});
+  });
+}
 </script>
 </body>
 </html>
