@@ -18,14 +18,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Josefin+Sans:wght@300;400;600;700&family=Libre+Baskerville:ital,wght@0,400;1,400&family=DM+Mono:wght@400;500&display=swap');
 :root{--black:#001b16;--forest:#033d33;--jungle:#022e27;--teal:#0d6354;--mint:#259f8a;--mint-pale:#e0fef8;--gold:#c9a84c;--gold-light:#e8c76a;--warm-white:#f7fffe;--dim:rgba(255,255,255,.45);--warn:#b03020;--warn-text:#ff9c8c;--warn-bg:rgba(176,48,32,.18);--card-border:rgba(37,159,138,.16);--line:rgba(37,159,138,.16)}
 *{box-sizing:border-box} body{margin:0;background:var(--black);color:var(--warm-white);font-family:"Josefin Sans",system-ui,sans-serif}
-.wrap{max-width:1120px;margin:auto;padding:20px 16px 60px}.mast{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin:12px 0 22px}.eyebrow{letter-spacing:.28em;text-transform:uppercase;font-size:10px;color:var(--mint);font-weight:600}h1,h2,h3{font-family:"Playfair Display",Georgia,serif;font-weight:900;margin:0;color:var(--warm-white)}h1{font-size:clamp(26px,4vw,42px);line-height:1.1}.sub{color:var(--dim);margin-top:8px;font-size:13px;font-family:"Libre Baskerville",Georgia,serif;font-style:italic}.actions{display:flex;gap:8px;flex-wrap:wrap}.btn{border:1px solid rgba(37,159,138,.4);background:transparent;color:var(--mint);border-radius:8px;padding:9px 14px;cursor:pointer;font-family:"Josefin Sans",sans-serif;font-weight:600;letter-spacing:.04em;transition:border-color .15s,color .15s}.btn:hover{border-color:var(--mint);color:var(--mint-pale)}.btn.primary{background:var(--gold);color:var(--black);border-color:var(--gold);font-weight:700;letter-spacing:.1em;text-transform:uppercase}.btn.primary:hover{background:var(--gold-light);border-color:var(--gold-light);color:var(--black)}.btn.danger{background:var(--warn);border-color:var(--warn);color:var(--warm-white)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}.card{background:var(--forest);color:var(--warm-white);border:1px solid var(--card-border);border-radius:10px;box-shadow:0 10px 25px rgba(0,0,0,.35);padding:18px}.next{border-left:3px solid var(--gold)}.next .label{color:var(--gold);font-family:"Josefin Sans",sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.22em}.next .title{font-family:"Playfair Display",Georgia,serif;font-weight:700;font-size:18px;margin:8px 0;color:var(--warm-white)}.next .meta{color:var(--dim);font-size:13px;font-family:"Libre Baskerville",Georgia,serif}.balanceRow{display:flex;align-items:center;justify-content:space-between;gap:15px}.balanceLabel{font-size:10px;text-transform:uppercase;letter-spacing:.22em;color:var(--mint);font-weight:700;font-family:"Josefin Sans",sans-serif}.money{font-family:"DM Mono",monospace;color:var(--gold)}.startInput{font:italic 700 26px "Playfair Display",Georgia,serif;width:170px;border:0;border-bottom:2px solid var(--gold);background:transparent;color:var(--gold);outline:0;text-align:right}.stat{font:italic 700 26px "Playfair Display",Georgia,serif;color:var(--gold)}.hint{font-size:12px;color:var(--dim);margin-top:6px;font-family:"Josefin Sans",sans-serif}.week{margin:14px 0}.weekHead{width:100%;display:flex;justify-content:space-between;align-items:center;background:var(--jungle);color:var(--warm-white);border:1px solid var(--card-border);border-radius:10px;padding:13px 15px;cursor:pointer;font-family:"Josefin Sans",sans-serif}.weekHead strong{font-family:"Playfair Display",Georgia,serif;font-weight:700;color:var(--warm-white)}.weekHead .wkbal{font:500 14px "DM Mono",monospace;color:var(--gold)}.weekBody{background:var(--forest);border:1px solid var(--card-border);border-top:0;border-radius:0 0 10px 10px;overflow:hidden}.event{display:grid;grid-template-columns:88px minmax(0,1fr) 150px 30px 28px;gap:12px;align-items:center;padding:12px 14px;border-bottom:1px solid var(--line);color:var(--warm-white)}.event:last-child{border-bottom:0}.date{font-family:"DM Mono",monospace;font-size:12px;color:var(--dim)}.dateText{cursor:text;border-bottom:1px dotted transparent}.dateText:hover{border-bottom-color:var(--gold)}.dateEditInput{font:500 12px "DM Mono",monospace;background:var(--black);border:1px solid var(--gold);border-radius:5px;padding:3px 2px;color:var(--warm-white);width:100%;color-scheme:dark}.desc{font-weight:600;font-family:"Josefin Sans",sans-serif}.descText{cursor:text;border-bottom:1px dotted transparent}.descText:hover{border-bottom-color:var(--gold)}.descEditInput{font:600 14px "Josefin Sans",sans-serif;background:var(--black);border:1px solid var(--gold);border-radius:5px;padding:4px 6px;color:var(--warm-white);width:100%;max-width:320px}.note{font-size:11px;color:var(--dim);margin-top:3px;font-family:"Libre Baskerville",Georgia,serif;font-style:italic}.tag{display:inline-block;margin-left:6px;font-size:9px;letter-spacing:.06em;padding:2px 7px;border-radius:20px;font-family:"Josefin Sans",sans-serif;font-weight:600;background:rgba(255,255,255,.08);color:var(--dim)}.tag.auto{background:rgba(37,159,138,.16);color:var(--mint)}.tag.action{background:rgba(201,168,76,.18);color:var(--gold-light)}.tag.warn{background:var(--warn-bg);color:var(--warn-text)}.amt{text-align:right;font:500 14px "DM Mono",monospace;cursor:text}.amt.in{color:var(--mint)}.amt.out{color:var(--gold)}.amt.zero{color:var(--dim)}.amt input{width:115px;text-align:right;font:500 14px "DM Mono",monospace;background:var(--black);border:1px solid var(--gold);border-radius:5px;padding:5px;color:var(--warm-white)}.check{width:18px;height:18px;accent-color:var(--mint)}.delBtn{width:26px;height:26px;display:flex;align-items:center;justify-content:center;background:transparent;border:1px solid transparent;border-radius:6px;color:var(--dim);font-size:14px;line-height:1;cursor:pointer;font-family:"Josefin Sans",sans-serif;transition:color .15s,border-color .15s,background .15s}.delBtn:hover{color:var(--warn-text);border-color:var(--warn);background:var(--warn-bg)}.tight{background:var(--warn-bg)}.tight .date,.tight .note{color:var(--warn-text)}.empty{padding:30px;text-align:center;color:var(--dim)}.add{margin:18px 0}.formgrid{display:grid;grid-template-columns:140px 1fr 130px 120px 1fr;gap:9px}.input,.select{width:100%;padding:10px;border:1px solid rgba(37,159,138,.3);border-radius:7px;background:var(--black);color:var(--warm-white);font:inherit;font-family:"Josefin Sans",sans-serif}.small{font-size:11px;color:var(--dim)}.footer{color:var(--dim);text-align:center;font-size:11px;margin-top:22px;font-family:"Josefin Sans",sans-serif}.hidden{display:none!important}
+.wrap{max-width:1120px;margin:auto;padding:20px 16px 60px}.mast{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin:12px 0 22px}.eyebrow{letter-spacing:.28em;text-transform:uppercase;font-size:10px;color:var(--mint);font-weight:600}h1,h2,h3{font-family:"Playfair Display",Georgia,serif;font-weight:900;margin:0;color:var(--warm-white)}h1{font-size:clamp(26px,4vw,42px);line-height:1.1}.sub{color:var(--dim);margin-top:8px;font-size:13px;font-family:"Libre Baskerville",Georgia,serif;font-style:italic}.actions{display:flex;gap:8px;flex-wrap:wrap}.btn{border:1px solid rgba(37,159,138,.4);background:transparent;color:var(--mint);border-radius:8px;padding:9px 14px;cursor:pointer;font-family:"Josefin Sans",sans-serif;font-weight:600;letter-spacing:.04em;transition:border-color .15s,color .15s}.btn:hover{border-color:var(--mint);color:var(--mint-pale)}.btn.primary{background:var(--gold);color:var(--black);border-color:var(--gold);font-weight:700;letter-spacing:.1em;text-transform:uppercase}.btn.primary:hover{background:var(--gold-light);border-color:var(--gold-light);color:var(--black)}.btn.danger{background:var(--warn);border-color:var(--warn);color:var(--warm-white)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}.card{background:var(--forest);color:var(--warm-white);border:1px solid var(--card-border);border-radius:10px;box-shadow:0 10px 25px rgba(0,0,0,.35);padding:18px}.next{border-left:3px solid var(--gold)}.next .label{color:var(--gold);font-family:"Josefin Sans",sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.22em}.next .title{font-family:"Playfair Display",Georgia,serif;font-weight:700;font-size:18px;margin:8px 0;color:var(--warm-white)}.next .meta{color:var(--dim);font-size:13px;font-family:"Libre Baskerville",Georgia,serif}.balanceRow{display:flex;align-items:center;justify-content:space-between;gap:15px}.balanceLabel{font-size:10px;text-transform:uppercase;letter-spacing:.22em;color:var(--mint);font-weight:700;font-family:"Josefin Sans",sans-serif}.money{font-family:"DM Mono",monospace;color:var(--gold)}.startInput{font:italic 700 26px "Playfair Display",Georgia,serif;width:170px;border:0;border-bottom:2px solid var(--gold);background:transparent;color:var(--gold);outline:0;text-align:right}.stat{font:italic 700 26px "Playfair Display",Georgia,serif;color:var(--gold)}.hint{font-size:12px;color:var(--dim);margin-top:6px;font-family:"Josefin Sans",sans-serif}.week{margin:14px 0}.weekHead{width:100%;display:flex;justify-content:space-between;align-items:center;background:var(--jungle);color:var(--warm-white);border:1px solid var(--card-border);border-radius:10px;padding:13px 15px;cursor:pointer;font-family:"Josefin Sans",sans-serif}.weekHead strong{font-family:"Playfair Display",Georgia,serif;font-weight:700;color:var(--warm-white)}.weekHead .wkbal{font:500 14px "DM Mono",monospace;color:var(--gold)}.weekBody{background:var(--forest);border:1px solid var(--card-border);border-top:0;border-radius:0 0 10px 10px;overflow:hidden}.event{display:grid;grid-template-columns:88px minmax(0,1fr) 150px 34px 30px 28px;gap:12px;align-items:center;padding:12px 14px;border-bottom:1px solid var(--line);color:var(--warm-white)}.event:last-child{border-bottom:0}.date{font-family:"DM Mono",monospace;font-size:12px;color:var(--dim)}.dateText{cursor:text;border-bottom:1px dotted transparent}.dateText:hover{border-bottom-color:var(--gold)}.dateEditInput{font:500 12px "DM Mono",monospace;background:var(--black);border:1px solid var(--gold);border-radius:5px;padding:3px 2px;color:var(--warm-white);width:100%;color-scheme:dark}.desc{font-weight:600;font-family:"Josefin Sans",sans-serif}.descText{cursor:text;border-bottom:1px dotted transparent}.descText:hover{border-bottom-color:var(--gold)}.descEditInput{font:600 14px "Josefin Sans",sans-serif;background:var(--black);border:1px solid var(--gold);border-radius:5px;padding:4px 6px;color:var(--warm-white);width:100%;max-width:320px}.note{font-size:11px;color:var(--dim);margin-top:3px;font-family:"Libre Baskerville",Georgia,serif;font-style:italic}.tag{display:inline-block;margin-left:6px;font-size:9px;letter-spacing:.06em;padding:2px 7px;border-radius:20px;font-family:"Josefin Sans",sans-serif;font-weight:600;background:rgba(255,255,255,.08);color:var(--dim)}.tag.auto{background:rgba(37,159,138,.16);color:var(--mint)}.tag.action{background:rgba(201,168,76,.18);color:var(--gold-light)}.tag.warn{background:var(--warn-bg);color:var(--warn-text)}.amt{text-align:right;font:500 14px "DM Mono",monospace;cursor:text}.amt.in{color:var(--mint)}.amt.out{color:var(--gold)}.amt.zero{color:var(--dim)}.amt input{width:115px;text-align:right;font:500 14px "DM Mono",monospace;background:var(--black);border:1px solid var(--gold);border-radius:5px;padding:5px;color:var(--warm-white)}.check{width:18px;height:18px;accent-color:var(--mint)}.delBtn{width:26px;height:26px;display:flex;align-items:center;justify-content:center;background:transparent;border:1px solid transparent;border-radius:6px;color:var(--dim);font-size:14px;line-height:1;cursor:pointer;font-family:"Josefin Sans",sans-serif;transition:color .15s,border-color .15s,background .15s}.delBtn:hover{color:var(--warn-text);border-color:var(--warn);background:var(--warn-bg)}.tight{background:var(--warn-bg)}.tight .date,.tight .note{color:var(--warn-text)}.empty{padding:30px;text-align:center;color:var(--dim)}.add{margin:18px 0}.formgrid{display:grid;grid-template-columns:140px 1fr 130px 120px 1fr;gap:9px}.input,.select{width:100%;padding:10px;border:1px solid rgba(37,159,138,.3);border-radius:7px;background:var(--black);color:var(--warm-white);font:inherit;font-family:"Josefin Sans",sans-serif}.small{font-size:11px;color:var(--dim)}.footer{color:var(--dim);text-align:center;font-size:11px;margin-top:22px;font-family:"Josefin Sans",sans-serif}.hidden{display:none!important}
 .formgrid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}.field{display:flex;flex-direction:column;gap:4px}.field label{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--mint);font-weight:700;font-family:"Josefin Sans",sans-serif}.field.checkField{flex-direction:row;align-items:center;gap:8px;padding-top:18px}.field.checkField label{padding-top:0;text-transform:none;letter-spacing:0;color:var(--warm-white);font-weight:400}
 .scoreHead{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;padding-left:14px}.scoreHead.ready{border-left:3px solid var(--mint)}.scoreHead.notready{border-left:3px solid var(--warn)}.scoreHead .label{font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase}.scoreHead.ready .label{color:var(--mint)}.scoreHead.notready .label{color:var(--warn-text)}.scoreHead .title{font-family:"Playfair Display",Georgia,serif;font-weight:700;font-size:20px;margin:6px 0 2px}.scoreHead .meta{color:var(--dim);font-size:12px;font-family:"Libre Baskerville",Georgia,serif;font-style:italic}
 .checklist{display:flex;flex-direction:column;gap:8px;margin-top:14px}.checkItem{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;border:1px solid var(--card-border);border-radius:8px;background:var(--jungle)}.checkIcon{font-size:16px;font-weight:700;width:20px;flex:none;text-align:center;line-height:1.4}.checkItem.pass .checkIcon{color:var(--mint)}.checkItem.fail .checkIcon{color:var(--warn-text)}.checkLabel{font-weight:600;font-size:14px}.checkDetail{font-size:11.5px;color:var(--dim);margin-top:3px;font-family:"DM Mono",monospace}.checkItem.fail .checkDetail{color:var(--warn-text)}
 .monthRow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}.monthRow:last-child{border-bottom:0}.monthLabel{font-family:"Playfair Display",Georgia,serif;font-weight:700;min-width:88px}.monthStats{color:var(--dim);flex:1;min-width:220px;font-family:"DM Mono",monospace;font-size:11px}
 .trendMetric{margin-top:16px}.trendTitle{font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--mint);font-weight:700;margin-bottom:8px}.trendRow{display:grid;grid-template-columns:64px 1fr 92px;gap:10px;align-items:center;margin-bottom:5px}.trendMonth{font-size:10px;color:var(--dim);font-family:"DM Mono",monospace}.trendBarTrack{background:rgba(255,255,255,.07);border-radius:4px;height:9px;overflow:hidden}.trendBar{background:linear-gradient(90deg,var(--mint),var(--gold));height:100%;border-radius:4px}.trendVal{font-size:11px;text-align:right;font-family:"DM Mono",monospace}
 .updateBanner{position:fixed;top:0;left:0;right:0;z-index:50;background:var(--jungle);border-bottom:1px solid var(--gold);box-shadow:0 6px 20px rgba(0,0,0,.4);padding:10px 16px;display:flex;align-items:center;justify-content:center;gap:12px;color:var(--warm-white);font-size:13px;font-family:"Josefin Sans",sans-serif;text-align:center}
-@media(max-width:760px){.mast{align-items:flex-start;flex-direction:column}.grid{grid-template-columns:1fr}.formgrid{grid-template-columns:1fr 1fr}.event{grid-template-columns:70px minmax(0,1fr) 105px 24px 22px;gap:7px;padding:11px 9px}.delBtn{width:22px;height:22px;font-size:12px}.desc{font-size:13px}.note{font-size:10px}.amt{font-size:12px}.startInput{width:145px;font-size:22px}.weekHead{padding:11px 12px}.wrap{padding:15px 10px 45px}}
+.moveCol{display:flex;flex-direction:column;gap:2px}.moveBtn{width:28px;height:16px;font-size:9px;line-height:1;border:1px solid rgba(37,159,138,.3);background:transparent;color:var(--mint);border-radius:4px;cursor:pointer;padding:0;font-family:"Josefin Sans",sans-serif}.moveBtn:disabled{opacity:.22;cursor:default}.moveBtn:hover:not(:disabled){border-color:var(--mint);color:var(--mint-pale)}
+.acctTabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}.acctTab{border:1px solid rgba(37,159,138,.3);background:var(--jungle);color:var(--dim);border-radius:20px;padding:8px 16px;font-family:"Josefin Sans",sans-serif;font-weight:600;font-size:13px;cursor:pointer;transition:border-color .15s,color .15s,background .15s}.acctTab .tabBal{font-family:"DM Mono",monospace;font-size:11px;margin-left:8px;opacity:.85}.acctTab:hover{border-color:var(--mint);color:var(--mint-pale)}.acctTab.active{background:var(--gold);color:var(--black);border-color:var(--gold)}.acctTab.active .tabBal{color:var(--black)}
+.totalCard{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:14px;padding:14px 18px}.totalCard .label{font-size:10px;text-transform:uppercase;letter-spacing:.2em;color:var(--mint);font-weight:700}.totalCard .val{font:italic 700 24px "Playfair Display",Georgia,serif;color:var(--gold-light)}.totalBreak{font-family:"DM Mono",monospace;font-size:11px;color:var(--dim);margin-top:4px}
+@media(max-width:760px){.mast{align-items:flex-start;flex-direction:column}.grid{grid-template-columns:1fr}.formgrid{grid-template-columns:1fr 1fr}.event{grid-template-columns:70px minmax(0,1fr) 105px 26px 24px 22px;gap:7px;padding:11px 9px}.delBtn{width:22px;height:22px;font-size:12px}.desc{font-size:13px}.note{font-size:10px}.amt{font-size:12px}.startInput{width:145px;font-size:22px}.weekHead{padding:11px 12px}.wrap{padding:15px 10px 45px}.moveBtn{width:24px;height:15px;font-size:8px}.acctTab{padding:7px 12px;font-size:12px}}
 </style>
 </head>
 <body>
@@ -34,6 +37,13 @@
     <div><div class="eyebrow">The Tobacco Center</div><h1>Cash Flow Companion</h1><div class="sub">A practical cash calendar for keeping the shop ahead of the next draft, order, and deposit.</div></div>
     <div class="actions"><button class="btn" id="exportBtn">Export backup</button><button class="btn" id="importBtn">Import</button><button class="btn" id="historyBtn">History</button><button class="btn" id="archiveBtn">Archive</button><button class="btn" id="scorecardBtn">Bank Readiness</button><button class="btn primary" id="addTop">+ Add event</button><input id="fileInput" class="hidden" type="file" accept="application/json"></div>
   </header>
+
+  <div class="card totalCard">
+    <div><div class="label">Total across all 5 accounts</div><div class="totalBreak" id="totalBreakdown"></div></div>
+    <div class="val" id="totalAll"></div>
+  </div>
+
+  <div class="acctTabs" id="acctTabs"></div>
 
   <section class="grid">
     <div class="card next" id="nextCard"></div>
@@ -46,6 +56,7 @@
 
   <section class="card add hidden" id="addCard">
     <h3 style="margin-bottom:12px">Add cash-flow event</h3>
+    <div class="hint" style="margin-bottom:10px">Adding to: <b id="addTargetLabel"></b></div>
     <div class="formgrid">
       <input id="newDate" class="input" type="date">
       <input id="newDesc" class="input" placeholder="Description">
@@ -58,21 +69,21 @@
 
   <section class="card add hidden" id="historyCard">
     <h3 style="margin-bottom:12px">Recent saves</h3>
-    <div class="hint" style="margin-bottom:10px">A snapshot is kept automatically before every save. Restoring one saves your current data first too, so it's never a dead end.</div>
+    <div class="hint" style="margin-bottom:10px">A snapshot is kept automatically before every save. Restoring one saves your current data first too, so it's never a dead end. Restoring brings back all 5 accounts as they were at that save.</div>
     <div id="historyList" class="small">Loading…</div>
     <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:10px"><button class="btn" id="closeHistory">Close</button></div>
   </section>
 
   <section class="card add hidden" id="archiveCard">
     <h3 style="margin-bottom:4px">Archived</h3>
-    <div class="hint" style="margin-bottom:14px">Events you check off move here automatically to keep your calendar focused on what's next — nothing here affects your balances, it's just out of the way. Uncheck one to bring it back.</div>
+    <div class="hint" style="margin-bottom:14px">Events you check off move here automatically to keep your calendar focused on what's next — nothing here affects your balances, it's just out of the way. Uncheck one to bring it back. Showing: <b id="archiveTargetLabel"></b></div>
     <div id="archiveList"></div>
     <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:16px"><button class="btn" id="closeArchive">Close</button></div>
   </section>
 
   <section class="card add hidden" id="scorecardCard">
     <h3 style="margin-bottom:4px">Bank Readiness Scorecard</h3>
-    <div class="hint" style="margin-bottom:14px">Six pass/fail thresholds for reapplying for conventional business financing, tracked month over month.</div>
+    <div class="hint" style="margin-bottom:14px">Six pass/fail thresholds for reapplying for conventional business financing, tracked month over month. Always based on the Income account, regardless of which tab is selected.</div>
     <div id="scorecardSummary"></div>
     <div style="display:flex;justify-content:space-between;align-items:center;margin:20px 0 8px"><h3 style="font-size:16px">Logged months</h3><button class="btn primary" id="logMonthBtn">+ Log month</button></div>
     <div id="scorecardHistory"></div>
@@ -82,7 +93,7 @@
 
   <section class="card add hidden" id="monthFormCard">
     <h3 id="monthFormTitle" style="margin-bottom:4px">Log month data</h3>
-    <div class="hint" style="margin-bottom:14px">Fields marked <b>est.</b> are pre-filled from your cash-flow calendar and prior months — check them against your actual bank/credit info before saving. YTD NOI has no in-app source and always needs your P&amp;L figure.</div>
+    <div class="hint" style="margin-bottom:14px">Fields marked <b>est.</b> are pre-filled from your Income account's cash-flow calendar and prior months — check them against your actual bank/credit info before saving. YTD NOI has no in-app source and always needs your P&amp;L figure.</div>
     <div class="formgrid2">
       <div class="field"><label>Month</label><input id="mMonth" class="input" type="month"></div>
       <div class="field"><label>YTD NOI ($)</label><input id="mNOI" class="input" type="number" step="0.01" placeholder="from your P&amp;L"></div>
@@ -110,7 +121,19 @@
 </div>
 
 <script>
-const seed = [
+// ---- Account definitions ----
+// Five real bank accounts. "income" is the main operating flow (the
+// original single-account version of this app). The other four were added
+// so the whole Profit First structure is visible in one place, not just
+// Income. Each account keeps its own start balance + event list.
+const ACCOUNT_DEFS = [
+  {id:"income", name:"Income"},
+  {id:"opex",   name:"Operating Expenses"},
+  {id:"profit", name:"Profit"},
+  {id:"comp",   name:"Owner's Comp"},
+  {id:"tax",    name:"Tax Reserve"}
+];
+const incomeSeed = [
 ["2026-08-23","Cash deposit ($428 carried + $485 today)",913,"you deposit tonight","action"],
 ["2026-08-24","Card deposit (Thu $869 + Fri $1,257 + Sat $678)",2804.40,"automatic","auto"],
 ["2026-08-24","Forward Financing MCA draft",-707.25,"automatic","auto"],
@@ -148,8 +171,36 @@ const seed = [
 ["2026-09-10","KB remainder (clears $3,086 balance)",-2386,"pay today — after Third Rule bump arrives","action"],
 ["2026-09-11","Card deposit (Wed sales, est.)",468,"estimate","auto"]
 ];
-const KEY="ttc_cash_flow_companion_v2";
-let state={start:167.08,events:seed.map((x,i)=>({id:i+1,date:x[0],desc:x[1],amount:x[2],note:x[3],kind:x[4],done:false,category:x[4]==="auto"?"Automatic":(x[2]>=0?"Deposit":"Vendor / Payment")})),scorecard:{months:[]}};
+function freshEvents(seed){return seed.map((x,i)=>({id:i+1,date:x[0],desc:x[1],amount:x[2],note:x[3],kind:x[4],done:false,category:x[4]==="auto"?"Automatic":(x[2]>=0?"Deposit":"Vendor / Payment")}))}
+function defaultAccounts(){
+  return {
+    income: {start:167.08, events:freshEvents(incomeSeed)},
+    opex:   {start:0, events:[]},
+    profit: {start:20, events:[]},
+    comp:   {start:20, events:[]},
+    tax:    {start:20, events:[]}
+  };
+}
+const KEY="ttc_cash_flow_companion_v3";
+let state={activeAccount:"income", accounts:defaultAccounts(), scorecard:{months:[]}};
+function currentAccount(){return state.accounts[state.activeAccount]}
+function accountById(id){return state.accounts[id]}
+function accountName(id){let d=ACCOUNT_DEFS.find(a=>a.id===id);return d?d.name:id}
+// Migrates the OLD single-account shape ({start, events, scorecard}) into
+// the new multi-account shape, putting the old data into "income" so
+// nobody's existing calendar disappears when this update goes live.
+function migrateIfNeeded(x){
+  if(x && Array.isArray(x.events) && x.start!==undefined && !x.accounts){
+    return {activeAccount:"income", accounts:{...defaultAccounts(), income:{start:x.start, events:x.events}}, scorecard:x.scorecard||{months:[]}};
+  }
+  if(x && x.accounts){
+    // Fill in any accounts missing from an older multi-account save (e.g. after adding a new account definition)
+    ACCOUNT_DEFS.forEach(d=>{ if(!x.accounts[d.id]) x.accounts[d.id]=defaultAccounts()[d.id]; });
+    if(!x.activeAccount || !x.accounts[x.activeAccount]) x.activeAccount="income";
+    return x;
+  }
+  return null;
+}
 let saveTimer=null;
 async function save(){
   clearTimeout(saveTimer);
@@ -163,10 +214,11 @@ async function save(){
 async function loadState(){
   try{
     const r=await fetch("/api/state");
-    if(r.ok){const x=await r.json(); if(x && Array.isArray(x.events)){state=x; ensureScorecard(); return;}}
+    if(r.ok){const x=await r.json(); let m=migrateIfNeeded(x); if(m){state=m; ensureScorecard(); return;}}
   }catch(e){}
   const local=JSON.parse(localStorage.getItem(KEY)||"null");
-  if(local) state=local;
+  let m=migrateIfNeeded(local);
+  if(m) state=m;
   ensureScorecard();
 }
 function ensureScorecard(){
@@ -176,15 +228,69 @@ function money(n){return new Intl.NumberFormat("en-US",{style:"currency",currenc
 function fmtDate(s){let d=new Date(s+"T12:00:00");return d.toLocaleDateString("en-US",{weekday:"short",month:"numeric",day:"numeric"})}
 function weekKey(s){let d=new Date(s+"T12:00:00");d.setDate(d.getDate()-((d.getDay()+6)%7));return d.toISOString().slice(0,10)}
 function weekLabel(s){let d=new Date(s+"T12:00:00"),e=new Date(d);e.setDate(d.getDate()+6);return d.toLocaleDateString("en-US",{month:"short",day:"numeric"})+" – "+e.toLocaleDateString("en-US",{month:"short",day:"numeric"})}
+// Balance-through-today for one account, used both per-account and to
+// build the all-accounts total at the top of the page.
+function currentBalanceOf(acct){
+  let today=new Date().toISOString().slice(0,10);
+  let ev=[...acct.events].sort((a,b)=>a.date.localeCompare(b.date)||a.id-b.id),bal=Number(acct.start),current=Number(acct.start);
+  ev.forEach(e=>{bal+=Number(e.amount);if(e.date<=today)current=bal});
+  return current;
+}
+function renderTotals(){
+  let parts=ACCOUNT_DEFS.map(d=>({name:d.name,val:currentBalanceOf(state.accounts[d.id])}));
+  let total=parts.reduce((s,p)=>s+p.val,0);
+  document.getElementById("totalAll").textContent=money(total);
+  document.getElementById("totalBreakdown").textContent=parts.map(p=>`${p.name} ${money(p.val)}`).join("  ·  ");
+}
+function renderTabs(){
+  let el=document.getElementById("acctTabs");
+  el.innerHTML=ACCOUNT_DEFS.map(d=>{
+    let bal=currentBalanceOf(state.accounts[d.id]);
+    return `<button type="button" class="acctTab ${d.id===state.activeAccount?"active":""}" data-acct="${d.id}">${d.name}<span class="tabBal">${money(bal)}</span></button>`;
+  }).join("");
+  el.querySelectorAll("[data-acct]").forEach(b=>b.onclick=()=>{
+    state.activeAccount=b.dataset.acct;
+    save();
+    render();
+  });
+}
+// Same-day ordering: events sharing a date are ordered by id ascending
+// (see render()'s sort). The move-up/move-down arrows let the user fix
+// that order directly — e.g. making sure a deposit's id sorts before a
+// same-day draft's — by swapping id values with the adjacent same-day
+// event within the SAME account. Swapping is safe: every other field
+// (date/desc/amount/etc.) stays on its original object, only the two ids
+// trade places.
+function sameDaySorted(date){
+  return currentAccount().events.filter(x=>x.date===date).sort((a,b)=>a.id-b.id);
+}
+function moveEvent(id,direction){
+  let e=currentAccount().events.find(x=>x.id===id);
+  if(!e)return;
+  let group=sameDaySorted(e.date);
+  let idx=group.findIndex(x=>x.id===id);
+  let targetIdx=direction==="up"?idx-1:idx+1;
+  if(targetIdx<0||targetIdx>=group.length)return;
+  let other=group[targetIdx];
+  let tmp=e.id;e.id=other.id;other.id=tmp;
+  save();render();
+  if(!document.getElementById("archiveCard").classList.contains("hidden"))renderArchive();
+}
 // One row template shared by the main calendar and the Archive list, so a
 // checked-off event looks and behaves identically in both places — the
 // checkbox itself IS the archive/restore control (checked = archived).
 function eventRowHtml(e){
  let tight=e.running<500;
+ let group=sameDaySorted(e.date),idx=group.findIndex(x=>x.id===e.id);
+ let canUp=idx>0,canDown=idx<group.length-1;
  return `<div class="event ${tight?"tight":""}" data-id="${e.id}">
  <div class="date"><span class="dateText" data-editdate="${e.id}" title="Click to edit">${fmtDate(e.date)}</span></div>
  <div><div class="desc"><span class="descText" data-editdesc="${e.id}" title="Click to edit">${esc(e.desc)}</span> <span class="tag ${e.kind==="auto"?"auto":e.amount<0?"action":""}">${e.kind==="auto"?"AUTO":e.amount<0?"ACTION":"IN"}</span></div><div class="note">${esc(e.note)}${tight?' · <b>Balance under $500</b>':''}</div></div>
  <div class="amt ${e.amount>0?"in":e.amount<0?"out":"zero"}" data-edit="${e.id}">${money(e.amount)}<div class="small">bal ${money(e.running)}</div></div>
+ <div class="moveCol">
+   <button class="moveBtn" type="button" data-moveup="${e.id}" ${canUp?"":"disabled"} title="Move earlier in the day" aria-label="Move ${esc(e.desc)} earlier">▲</button>
+   <button class="moveBtn" type="button" data-movedown="${e.id}" ${canDown?"":"disabled"} title="Move later in the day" aria-label="Move ${esc(e.desc)} later">▼</button>
+ </div>
  <input class="check" type="checkbox" ${e.done?"checked":""} data-check="${e.id}">
  <button class="delBtn" type="button" data-del="${e.id}" title="Delete event" aria-label="Delete ${esc(e.desc)}">✕</button>
  </div>`;
@@ -192,29 +298,38 @@ function eventRowHtml(e){
 // Wires up the interactive bits of whatever event rows currently live in
 // `container` — used for both the main calendar and the Archive list.
 function wireEventRows(container){
- container.querySelectorAll("[data-week]").forEach(b=>b.onclick=()=>{let c=JSON.parse(localStorage.getItem(KEY+"_collapsed")||"{}");c[b.dataset.week]=!c[b.dataset.week];localStorage.setItem(KEY+"_collapsed",JSON.stringify(c));render()});
+ container.querySelectorAll("[data-week]").forEach(b=>b.onclick=()=>{let c=JSON.parse(localStorage.getItem(KEY+"_collapsed_"+state.activeAccount)||"{}");c[b.dataset.week]=!c[b.dataset.week];localStorage.setItem(KEY+"_collapsed_"+state.activeAccount,JSON.stringify(c));render()});
  container.querySelectorAll("[data-check]").forEach(c=>c.onchange=()=>{
-   let e=state.events.find(x=>x.id==c.dataset.check);e.done=c.checked;save();render();
+   let e=currentAccount().events.find(x=>x.id==c.dataset.check);e.done=c.checked;save();render();
    if(!document.getElementById("archiveCard").classList.contains("hidden"))renderArchive();
  });
  container.querySelectorAll("[data-edit]").forEach(a=>a.onclick=()=>editAmount(a));
  container.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>deleteEvent(+b.dataset.del));
  container.querySelectorAll("[data-editdesc]").forEach(a=>a.onclick=()=>editDesc(a));
  container.querySelectorAll("[data-editdate]").forEach(a=>a.onclick=()=>editDate(a));
+ container.querySelectorAll("[data-moveup]").forEach(b=>b.onclick=()=>moveEvent(+b.dataset.moveup,"up"));
+ container.querySelectorAll("[data-movedown]").forEach(b=>b.onclick=()=>moveEvent(+b.dataset.movedown,"down"));
 }
 function render(){
- document.getElementById("startBalance").value=Number(state.start).toFixed(2);
+ renderTotals();
+ renderTabs();
+ let acct=currentAccount();
+ document.getElementById("startBalance").value=Number(acct.start).toFixed(2);
  let today=new Date().toISOString().slice(0,10);
- let ev=[...state.events].sort((a,b)=>a.date.localeCompare(b.date)||a.id-b.id), bal=Number(state.start), current=Number(state.start), groups={}, next=null;
+ let ev=[...acct.events].sort((a,b)=>a.date.localeCompare(b.date)||a.id-b.id), bal=Number(acct.start), current=Number(acct.start), groups={}, next=null;
  ev.forEach(e=>{e.running=bal+Number(e.amount);bal=e.running;if(e.date<=today) current=bal;if(!e.done&&e.kind!=="auto"&&e.note&&e.note!=="estimate") next=next||e;let k=weekKey(e.date);(groups[k]??=[]).push(e)});
  document.getElementById("current").textContent=money(current);
  document.getElementById("ending").textContent=money(bal);
- document.getElementById("nextCard").innerHTML=next?`<div class="label">Next action needed</div><div class="title">${esc(next.desc)}</div><div class="meta">${fmtDate(next.date)} · <b>${money(next.amount)}</b><br>${esc(next.note)}</div>`:`<div class="label">All caught up</div><div class="title">No manual actions are waiting.</div><div class="meta">Automatic drafts and deposits stay visible below.</div>`;
- let html="", collapsed=JSON.parse(localStorage.getItem(KEY+"_collapsed")||"{}");
+ document.getElementById("nextCard").innerHTML=next?`<div class="label">Next action needed — ${esc(accountName(state.activeAccount))}</div><div class="title">${esc(next.desc)}</div><div class="meta">${fmtDate(next.date)} · <b>${money(next.amount)}</b><br>${esc(next.note)}</div>`:`<div class="label">${esc(accountName(state.activeAccount))} — all caught up</div><div class="title">No manual actions are waiting.</div><div class="meta">Automatic drafts and deposits stay visible below.</div>`;
+ let html="", collapsed=JSON.parse(localStorage.getItem(KEY+"_collapsed_"+state.activeAccount)||"{}");
  // Checked-off events move to Archive and drop out of the main calendar —
  // weekEnd is still computed from the FULL week (every event, archived or
  // not), since that's the true cumulative balance; only which rows get
  // drawn is filtered. A week that's entirely archived is skipped outright.
+ if(!ev.length){
+   document.getElementById("events").innerHTML=`<div class="empty">No events yet for ${esc(accountName(state.activeAccount))}. Use "+ Add event" to start tracking it, or check Import if you have a backup for this account.</div>`;
+   return;
+ }
  Object.entries(groups).forEach(([wk,list])=>{
   let visible=list.filter(e=>!e.done);
   if(!visible.length)return;
@@ -223,18 +338,19 @@ function render(){
   visible.forEach(e=>{html+=eventRowHtml(e)});
   html+="</div></section>";
  });
- document.getElementById("events").innerHTML=html;
+ document.getElementById("events").innerHTML=html || `<div class="empty">Nothing upcoming for ${esc(accountName(state.activeAccount))} — everything's archived. Check Archive above.</div>`;
  wireEventRows(document.getElementById("events"));
 }
 function renderArchive(){
+ document.getElementById("archiveTargetLabel").textContent=accountName(state.activeAccount);
  let el=document.getElementById("archiveList");
- let items=state.events.filter(e=>e.done).sort((a,b)=>b.date.localeCompare(a.date)||b.id-a.id);
+ let items=currentAccount().events.filter(e=>e.done).sort((a,b)=>b.date.localeCompare(a.date)||b.id-a.id);
  if(!items.length){el.innerHTML='<div class="empty">Nothing archived yet — check an item off in your calendar and it will move here.</div>';return}
  el.innerHTML=items.map(eventRowHtml).join("");
  wireEventRows(el);
 }
 function editDate(el){
- let id=+el.dataset.editdate,e=state.events.find(x=>x.id===id);if(!e)return;
+ let id=+el.dataset.editdate,e=currentAccount().events.find(x=>x.id===id);if(!e)return;
  let input=document.createElement("input");
  input.type="date";
  input.className="dateEditInput";
@@ -249,7 +365,7 @@ function editDate(el){
  input.onkeydown=x=>{if(x.key==="Enter")commit();if(x.key==="Escape")cancel()};
 }
 function editDesc(el){
- let id=+el.dataset.editdesc,e=state.events.find(x=>x.id===id);if(!e)return;
+ let id=+el.dataset.editdesc,e=currentAccount().events.find(x=>x.id===id);if(!e)return;
  let input=document.createElement("input");
  input.className="descEditInput";
  input.value=e.desc;
@@ -262,22 +378,22 @@ function editDesc(el){
  input.onkeydown=x=>{if(x.key==="Enter")commit();if(x.key==="Escape")cancel()};
 }
 function deleteEvent(id){
- let e=state.events.find(x=>x.id===id);
+ let e=currentAccount().events.find(x=>x.id===id);
  if(!e)return;
  if(!confirm(`Delete "${e.desc}" (${fmtDate(e.date)})? Use History above to bring it back if this was a mistake.`))return;
- state.events=state.events.filter(x=>x.id!==id);
+ currentAccount().events=currentAccount().events.filter(x=>x.id!==id);
  save();
  render();
 }
-function editAmount(el){let id=+el.dataset.edit,e=state.events.find(x=>x.id===id);if(!e)return;let input=document.createElement("input");input.value=Math.abs(e.amount).toFixed(2);el.innerHTML="";el.appendChild(input);input.focus();input.select();let done=false;let commit=()=>{if(done)return;done=true;let n=parseFloat(input.value);if(Number.isFinite(n)){e.amount=(e.amount<0?-1:1)*n;save()}render()};let cancel=()=>{if(done)return;done=true;render()};input.onblur=commit;input.onkeydown=x=>{if(x.key==="Enter")commit();if(x.key==="Escape")cancel()}}
+function editAmount(el){let id=+el.dataset.edit,e=currentAccount().events.find(x=>x.id===id);if(!e)return;let input=document.createElement("input");input.value=Math.abs(e.amount).toFixed(2);el.innerHTML="";el.appendChild(input);input.focus();input.select();let done=false;let commit=()=>{if(done)return;done=true;let n=parseFloat(input.value);if(Number.isFinite(n)){e.amount=(e.amount<0?-1:1)*n;save()}render()};let cancel=()=>{if(done)return;done=true;render()};input.onblur=commit;input.onkeydown=x=>{if(x.key==="Enter")commit();if(x.key==="Escape")cancel()}}
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
-document.getElementById("startBalance").onchange=e=>{let n=parseFloat(e.target.value);if(Number.isFinite(n)){state.start=n;save();render()}};
-document.getElementById("addTop").onclick=()=>{document.getElementById("historyCard").classList.add("hidden");document.getElementById("archiveCard").classList.add("hidden");document.getElementById("scorecardCard").classList.add("hidden");document.getElementById("monthFormCard").classList.add("hidden");document.getElementById("addCard").classList.remove("hidden");document.getElementById("newDate").value=new Date().toISOString().slice(0,10);document.getElementById("newDesc").focus()};
+document.getElementById("startBalance").onchange=e=>{let n=parseFloat(e.target.value);if(Number.isFinite(n)){currentAccount().start=n;save();render()}};
+document.getElementById("addTop").onclick=()=>{document.getElementById("historyCard").classList.add("hidden");document.getElementById("archiveCard").classList.add("hidden");document.getElementById("scorecardCard").classList.add("hidden");document.getElementById("monthFormCard").classList.add("hidden");document.getElementById("addCard").classList.remove("hidden");document.getElementById("addTargetLabel").textContent=accountName(state.activeAccount);document.getElementById("newDate").value=new Date().toISOString().slice(0,10);document.getElementById("newDesc").focus()};
 document.getElementById("cancelAdd").onclick=()=>document.getElementById("addCard").classList.add("hidden");
-document.getElementById("saveAdd").onclick=()=>{let d=document.getElementById("newDate").value,desc=document.getElementById("newDesc").value.trim(),n=parseFloat(document.getElementById("newAmount").value),dir=document.getElementById("newDirection").value,note=document.getElementById("newNote").value.trim();if(!d||!desc||!Number.isFinite(n))return alert("Please enter a date, description, and amount.");state.events.push({id:Date.now(),date:d,desc,amount:dir==="out"?-Math.abs(n):Math.abs(n),note:note||"manual item",kind:dir==="out"?"action":"action",done:false,category:dir==="out"?"Vendor / Payment":"Deposit"});save();document.getElementById("addCard").classList.add("hidden");["newDesc","newAmount","newNote"].forEach(id=>document.getElementById(id).value="");render()};
+document.getElementById("saveAdd").onclick=()=>{let d=document.getElementById("newDate").value,desc=document.getElementById("newDesc").value.trim(),n=parseFloat(document.getElementById("newAmount").value),dir=document.getElementById("newDirection").value,note=document.getElementById("newNote").value.trim();if(!d||!desc||!Number.isFinite(n))return alert("Please enter a date, description, and amount.");currentAccount().events.push({id:Date.now(),date:d,desc,amount:dir==="out"?-Math.abs(n):Math.abs(n),note:note||"manual item",kind:dir==="out"?"action":"action",done:false,category:dir==="out"?"Vendor / Payment":"Deposit"});save();document.getElementById("addCard").classList.add("hidden");["newDesc","newAmount","newNote"].forEach(id=>document.getElementById(id).value="");render()};
 document.getElementById("exportBtn").onclick=()=>{let blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="cash-flow-companion-backup.json";a.click();URL.revokeObjectURL(a.href)};
 document.getElementById("importBtn").onclick=()=>document.getElementById("fileInput").click();
-document.getElementById("fileInput").onchange=e=>{let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let x=JSON.parse(r.result);if(x.start===undefined||!Array.isArray(x.events))throw 0;state=x;ensureScorecard();save();render()}catch{alert("That backup file could not be read.")}};r.readAsText(f)};
+document.getElementById("fileInput").onchange=e=>{let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let x=JSON.parse(r.result);let m=migrateIfNeeded(x);if(!m)throw 0;state=m;ensureScorecard();save();render()}catch{alert("That backup file could not be read.")}};r.readAsText(f)};
 function fmtWhen(saved_at){let d=new Date(saved_at.replace(" ","T")+"Z");return isNaN(d)?saved_at:d.toLocaleString("en-US",{month:"short",day:"numeric",hour:"numeric",minute:"2-digit"})}
 async function loadHistory(){
   let list=document.getElementById("historyList");
@@ -296,7 +412,9 @@ async function loadHistory(){
       try{
         let r=await fetch("/api/state/restore/"+btn.dataset.restore,{method:"POST"});
         if(!r.ok)throw new Error();
-        state=await r.json();
+        let x=await r.json();
+        let m=migrateIfNeeded(x);
+        state=m||state;
         ensureScorecard();
         document.getElementById("historyCard").classList.add("hidden");
         render();
@@ -310,6 +428,9 @@ document.getElementById("archiveBtn").onclick=()=>{document.getElementById("addC
 document.getElementById("closeArchive").onclick=()=>document.getElementById("archiveCard").classList.add("hidden");
 
 // ---- Bank Readiness Scorecard ----
+// Always keyed off the Income account specifically — DSCR, revenue trend,
+// etc. describe the operating business, not whichever tab happens to be
+// selected when the user opens this panel.
 function scMonths(){return state.scorecard.months}
 function monthLabel(s){let [y,m]=s.split("-");let d=new Date(Number(y),Number(m)-1,1);return d.toLocaleDateString("en-US",{month:"short",year:"numeric"})}
 function annualizedNOI(m){return (Number(m.ytdNOI)/Number(m.periodDays))*365}
@@ -393,29 +514,30 @@ function renderScorecard(){
   renderMonthHistory();
   renderTrends();
 }
-// ---- Auto-fill helpers: derive sensible starting values from data the app
-// already has (the cash-flow event calendar + prior logged months), so most
-// months don't require typing every field from scratch. Anything derived
-// this way is a projection/estimate from the calendar, not a bank fact —
-// it's pre-filled as a real (white) value, same as a carried-forward field,
-// but the form's hint text says to confirm it before saving.
+// ---- Auto-fill helpers: derive sensible starting values from the INCOME
+// account's data (the cash-flow event calendar + prior logged months), so
+// most months don't require typing every field from scratch. Anything
+// derived this way is a projection/estimate from the calendar, not a bank
+// fact — it's pre-filled as a real (white) value, same as a carried-forward
+// field, but the form's hint text says to confirm it before saving.
 function dayOfYearEndOfMonth(monthStr){
   let [y,m]=monthStr.split("-").map(Number);
   let monthEnd=new Date(y,m,0),start=new Date(y,0,1);
   return Math.round((monthEnd-start)/86400000)+1;
 }
 function runningBalances(){
-  let ev=[...state.events].sort((a,b)=>a.date.localeCompare(b.date)||a.id-b.id),bal=Number(state.start);
+  let acct=accountById("income");
+  let ev=[...acct.events].sort((a,b)=>a.date.localeCompare(b.date)||a.id-b.id),bal=Number(acct.start);
   return ev.map(e=>{bal+=Number(e.amount);return {date:e.date,desc:e.desc,kind:e.kind,amount:Number(e.amount),bal}});
 }
 function monthEventsRevenue(monthStr){
-  return state.events.filter(e=>e.date.startsWith(monthStr)&&Number(e.amount)>0).reduce((s,e)=>s+Number(e.amount),0);
+  return accountById("income").events.filter(e=>e.date.startsWith(monthStr)&&Number(e.amount)>0).reduce((s,e)=>s+Number(e.amount),0);
 }
 function monthMcaDraftTotal(monthStr){
-  return state.events.filter(e=>e.date.startsWith(monthStr)&&Number(e.amount)<0&&/mca/i.test(e.desc)).reduce((s,e)=>s+Math.abs(Number(e.amount)),0);
+  return accountById("income").events.filter(e=>e.date.startsWith(monthStr)&&Number(e.amount)<0&&/mca/i.test(e.desc)).reduce((s,e)=>s+Math.abs(Number(e.amount)),0);
 }
 function latestMcaDraftAmount(){
-  let matches=state.events.filter(e=>e.kind==="auto"&&Number(e.amount)<0&&/mca/i.test(e.desc)).sort((a,b)=>a.date.localeCompare(b.date));
+  let matches=accountById("income").events.filter(e=>e.kind==="auto"&&Number(e.amount)<0&&/mca/i.test(e.desc)).sort((a,b)=>a.date.localeCompare(b.date));
   return matches.length?Math.abs(matches[matches.length-1].amount):null;
 }
 function projectedMinBalanceTrailing60d(monthStr){
