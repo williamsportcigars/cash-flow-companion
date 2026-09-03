@@ -51,8 +51,7 @@ const RECONCILE_MODEL = "@cf/meta/llama-3.2-11b-vision-instruct";
 const MAX_IMAGES = 6;
 const MAX_IMAGE_CHARS = 3_500_000; // base64 length, ~2.6MB decoded, after client downscale
 
-const VISION_PASSES = 2; // read each screenshot twice and union the results — one
-                         // pass often drops a row the other catches
+const VISION_PASSES = 1; // reads per screenshot (union of the passes)
 
 function extractSystem(today) {
   return `Today is ${today}. ` + EXTRACT_SYSTEM;
@@ -123,39 +122,36 @@ function dataUrlToBytes(dataUrl) {
   return arr;
 }
 
-// Different Workers AI vision models want the image in different shapes:
-//  - Llama 4 Scout / most modern models: OpenAI-style content parts with image_url
-//  - Llama 3.2 Vision: a top-level `image` as an array of byte values
-// Try the modern shape first, fall back to the legacy one.
+// Llama 3.2 Vision wants a top-level `image` byte array; newer multimodal
+// models (Llama 4, GLM, Qwen) want OpenAI-style content parts with image_url.
 async function runVision(env, model, dataUrl, today) {
   const sys = extractSystem(today);
-  try {
-    return await env.AI.run(model, {
-      messages: [
-        { role: "system", content: sys },
-        {
-          role: "user",
-          content: [
-            { type: "text", text: "Extract this bank screenshot to JSON now." },
-            { type: "image_url", image_url: { url: dataUrl } },
-          ],
-        },
-      ],
-      max_tokens: 4096,
-      temperature: 0,
-    });
-  } catch (e) {
-    if (isAgreementError(e)) throw e;
+  const ask = "Extract this bank screenshot to JSON now.";
+  if (/llama-3\.2/.test(model)) {
     return env.AI.run(model, {
       messages: [
         { role: "system", content: sys },
-        { role: "user", content: "Extract this bank screenshot to JSON now." },
+        { role: "user", content: ask },
       ],
       image: [...dataUrlToBytes(dataUrl)],
       max_tokens: 4096,
       temperature: 0,
     });
   }
+  return env.AI.run(model, {
+    messages: [
+      { role: "system", content: sys },
+      {
+        role: "user",
+        content: [
+          { type: "text", text: ask },
+          { type: "image_url", image_url: { url: dataUrl } },
+        ],
+      },
+    ],
+    max_tokens: 4096,
+    temperature: 0,
+  });
 }
 
 async function visionWithAgree(env, model, dataUrl, today) {
