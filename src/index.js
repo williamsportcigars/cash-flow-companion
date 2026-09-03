@@ -120,25 +120,17 @@ function dataUrlToBytes(dataUrl) {
   return arr;
 }
 
-// The Llama 3.2 Vision binding has accepted `image` as an array of bytes
-// historically and a base64 / data-URI string more recently. Try the byte
-// array first, fall back to the raw string, so this keeps working across
-// runtime versions.
+// The Llama 3.2 Vision binding takes `image` as an array of byte values.
 async function runVision(env, model, dataUrl, today) {
-  const base = {
+  return env.AI.run(model, {
     messages: [
       { role: "system", content: extractSystem(today) },
       { role: "user", content: "Extract this bank screenshot to JSON now." },
     ],
+    image: [...dataUrlToBytes(dataUrl)],
     max_tokens: 2048,
     temperature: 0,
-  };
-  try {
-    return await env.AI.run(model, { ...base, image: [...dataUrlToBytes(dataUrl)] });
-  } catch (e) {
-    if (isAgreementError(e)) throw e;
-    return env.AI.run(model, { ...base, image: dataUrl });
-  }
+  });
 }
 
 async function visionWithAgree(env, model, dataUrl, today) {
