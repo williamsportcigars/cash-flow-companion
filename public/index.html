@@ -121,14 +121,14 @@
 
   <section class="card add hidden" id="reconcileCard">
     <h3 style="margin-bottom:4px">Reconcile from bank screenshots</h3>
-    <div class="hint" style="margin-bottom:14px">Upload screenshots of one account — the balance header plus the transaction list. The app reads them, matches what it finds against that account's calendar, and shows you what to confirm, add, or check off. <b>Nothing changes until you review and press Apply</b>, and Apply can be undone from History. Screenshots are sent to Cloudflare's AI to read the text, then discarded — they are not stored.</div>
+    <div class="hint" style="margin-bottom:14px">Upload screenshots of one account — the balance header plus the transaction list. The app reads them, matches what it finds against that account's calendar, and shows you what to confirm, add, or check off. <b>Nothing changes until you review and press Apply</b>, and Apply can be undone from History. Screenshots are sent to an AI service to read the text, then discarded — they are not stored.</div>
 
     <div id="recStep1">
       <div class="field" style="max-width:260px;margin-bottom:12px"><label>Account these screenshots are for</label><select id="recAccount" class="select"></select></div>
       <div id="recDrop" class="recDrop">
         <input id="recFiles" class="hidden" type="file" accept="image/*" multiple>
         <div><b>Tap to choose screenshots</b>, drop them here, or paste</div>
-        <div class="small" style="margin-top:4px">Up to 6 at once. Long transaction lists: take a few overlapping screenshots.</div>
+        <div class="small" style="margin-top:4px">Up to 6 at once. Include the balance header on the first one. Shorter screenshots (5–10 rows each, slightly overlapping) read more accurately than one long one.</div>
         <div class="recThumbs" id="recThumbs"></div>
       </div>
       <div id="recStatus" class="hint" style="margin-top:10px"></div>
@@ -823,7 +823,7 @@ document.getElementById("recRead").onclick=async()=>{
   try{
     let images=[];
     for(const f of recState.files)images.push(await recCompress(f));
-    status.textContent="Reading the screenshots… this usually takes 10–30 seconds.";
+    status.textContent="Reading the screenshots… 10–60 seconds.";
     let r=await fetch("/api/reconcile",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({account:recState.account,images})});
     let data=null;try{data=await r.json();}catch(e){}
     if(!r.ok||!data){status.textContent=(data&&data.error)||("Couldn't read the screenshots (error "+r.status+"). Try again shortly.");recState.reading=false;btn.disabled=false;return;}
@@ -924,7 +924,8 @@ function renderReconcile(){
   let pEl=document.getElementById("recPosted"),aEl=document.getElementById("recAvail");
   if(document.activeElement!==pEl&&!pEl.dataset.touched)pEl.value=ex.postedBalance!=null?ex.postedBalance:"";
   if(document.activeElement!==aEl&&!aEl.dataset.touched)aEl.value=ex.availableBalance!=null?ex.availableBalance:"";
-  let warns=ex.warnings||[];
+  let warns=(ex.warnings||[]).slice();
+  if(ex.engine==="workers-ai")warns.push("Read with the free model — reliable on short lists, shaky on long ones. Check every amount, date and in/out against the screenshot, and trust the balance strip below.");
   document.getElementById("recWarnings").innerHTML=warns.length?('<div class="recWarn">'+warns.map(esc).join("<br>")+'</div>'):"";
   let events=accountById(recState.account).events,html="";
   if(recState.rows.length){
