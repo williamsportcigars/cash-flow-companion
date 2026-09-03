@@ -725,6 +725,22 @@ function recDecode(s){let n=recNorm(s);for(const d of REC_DECODER){if(d.re.test(
 function recKindFor(cat){return cat==="Automatic"?"auto":"action";}
 function recNum(v){let n=parseFloat(String(v==null?"":v).replace(/[$,\s]/g,""));return Number.isFinite(n)?n:NaN;}
 function recValidDate(s){return typeof s==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(s);}
+// Vision models sometimes put the wrong YEAR on a row it otherwise read fine
+// (they only see month + day). Snap the year to whichever of last year /
+// this year lands the date closest to today without going into the future.
+function recRepairYear(dateStr,today){
+  if(!recValidDate(dateStr)||!recValidDate(today))return dateStr;
+  let t=new Date(today+"T12:00:00"),best=dateStr,bestGap=Infinity;
+  for(let dy=-1;dy<=1;dy++){
+    let cand=(t.getFullYear()+dy)+dateStr.slice(4);
+    if(!recValidDate(cand))continue;
+    let cd=new Date(cand+"T12:00:00");
+    if(cd-t>86400000)continue;              // don't move a date into the future
+    let gap=Math.abs(cd-t);
+    if(gap<bestGap){bestGap=gap;best=cand;}
+  }
+  return best;
+}
 
 let recState={account:"income",files:[],thumbUrls:[],reading:false,extraction:null,rows:[],unposted:[],asOf:""};
 
@@ -851,9 +867,12 @@ function recMatch(txn,events){
 function buildProposals(){
   let ex=recState.extraction,events=accountById(recState.account).events;
   events.forEach(e=>{delete e._recTaken;});
-  let asOf=recValidDate(ex.asOf)?ex.asOf:new Date().toISOString().slice(0,10);
+  let localToday=new Date().toISOString().slice(0,10);
+  let today=recValidDate(ex.today)?ex.today:localToday;
+  let asOf=recValidDate(ex.asOf)?recRepairYear(ex.asOf,today):today;
   recState.asOf=asOf;
-  let txns=[...(ex.transactions||[])].sort((a,b)=>((a.status==="pending")-(b.status==="pending"))||String(a.date).localeCompare(String(b.date)));
+  let txns=(ex.transactions||[]).map(t=>({...t,date:recRepairYear(t.date,today)}))
+    .sort((a,b)=>((a.status==="pending")-(b.status==="pending"))||String(a.date).localeCompare(String(b.date)));
   recState.unposted=[];
   recState.rows=txns.map((txn,i)=>{
     if(!recValidDate(txn.date))txn.date=asOf;

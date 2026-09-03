@@ -51,6 +51,13 @@ const RECONCILE_MODEL = "@cf/meta/llama-3.2-11b-vision-instruct";
 const MAX_IMAGES = 6;
 const MAX_IMAGE_CHARS = 3_500_000; // base64 length, ~2.6MB decoded, after client downscale
 
+const VISION_PASSES = 2; // read each screenshot twice and union the results — one
+                         // pass often drops a row the other catches
+
+function extractSystem(today) {
+  return `Today is ${today}. ` + EXTRACT_SYSTEM;
+}
+
 const EXTRACT_SYSTEM = `You read a screenshot of a bank account (usually the M&T mobile app) and output ONLY minified JSON. No prose, no markdown code fences.
 
 Output shape:
@@ -63,8 +70,8 @@ Rules:
 - Balances and amounts are dollar figures with cents and usually a "$". A masked account number like "...4821", "x4821" or "ending 4821" is NOT a balance — ignore it.
 - "postedBalance" is the balance labelled Current, Present, Posted, or Ledger; "availableBalance" is the one labelled Available. Either may be absent — use null, do not guess one from the other.
 - A row is "status":"pending" if it is under a "Pending" / "Processing" heading OR labelled pending; every other row is "posted". If there is no pending section, all rows are "posted".
-- If the year is not shown, assume the most recent year that keeps the date in the past.
-- If you cannot read a value, use null. Never invent a transaction or a number.`;
+- Most rows show only month and day. Use the year from "today" above; if that puts the date in the future, use the previous year. Never use a year more than one year before today.
+- If you cannot read a value, use null. Never invent a transaction, a date, or a number that is not visible in the image.`;
 
 function jsonResponse(obj, status = 200) {
   return new Response(JSON.stringify(obj), {
@@ -117,10 +124,10 @@ function dataUrlToBytes(dataUrl) {
 // historically and a base64 / data-URI string more recently. Try the byte
 // array first, fall back to the raw string, so this keeps working across
 // runtime versions.
-async function runVision(env, model, dataUrl) {
+async function runVision(env, model, dataUrl, today) {
   const base = {
     messages: [
-      { role: "system", content: EXTRACT_SYSTEM },
+      { role: "system", content: extractSystem(today) },
       { role: "user", content: "Extract this bank screenshot to JSON now." },
     ],
     max_tokens: 2048,
@@ -134,9 +141,9 @@ async function runVision(env, model, dataUrl) {
   }
 }
 
-async function visionWithAgree(env, model, dataUrl) {
+async function visionWithAgree(env, model, dataUrl, today) {
   try {
-    return await runVision(env, model, dataUrl);
+    return await runVision(env, model, dataUrl, today);
   } catch (e) {
     if (!isAgreementError(e)) throw e;
     try {
@@ -144,8 +151,28 @@ async function visionWithAgree(env, model, dataUrl) {
     } catch {
       // fall through to the retry; if it still fails the caller surfaces it
     }
-    return runVision(env, model, dataUrl);
+    return runVision(env, model, dataUrl, today);
   }
+}
+
+// Read one screenshot VISION_PASSES times and union the transactions — one
+// pass frequently drops a row that another pass reads fine.
+async function readImage(env, model, dataUrl, today) {
+  const runs = await Promise.allSettled(
+    Array.from({ length: VISION_PASSES }, () => visionWithAgree(env, model, dataUrl, today))
+  );
+  const parsed = [];
+  let lastErr = null;
+  for (const r of runs) {
+    if (r.status === "fulfilled") {
+      const p = extractJson(pickModelText(r.value));
+      if (p && Array.isArray(p.transactions)) parsed.push(p);
+    } else {
+      lastErr = r.reason;
+    }
+  }
+  if (!parsed.length) throw lastErr || new Error("could not read this screenshot");
+  return mergeExtractions(parsed); // union of the passes for this one image
 }
 
 function normDesc(s) {
@@ -231,30 +258,25 @@ async function handleReconcile(request, env) {
     }
   }
   const model = typeof body.model === "string" && body.model.trim() ? body.model.trim() : RECONCILE_MODEL;
+  const today = new Date().toISOString().slice(0, 10);
 
   const pages = [];
   const warnings = [];
   for (let i = 0; i < images.length; i++) {
     try {
-      const parsed = extractJson(pickModelText(await visionWithAgree(env, model, images[i])));
-      if (parsed && Array.isArray(parsed.transactions)) {
-        pages.push(parsed);
-      } else {
-        warnings.push(`Screenshot ${i + 1}: couldn't read a transaction list from it.`);
-        pages.push({ error: "unparseable" });
-      }
+      pages.push(await readImage(env, model, images[i], today));
     } catch (e) {
       const msg = String((e && e.message) || e).slice(0, 200);
       warnings.push(
         isAgreementError(e)
-          ? `Screenshot ${i + 1}: the vision model needs a one-time license acceptance — open @cf/meta/llama-3.2-11b-vision-instruct once in the Cloudflare Workers AI Playground and accept Meta's terms, then retry.`
-          : `Screenshot ${i + 1}: ${msg}`
+          ? `Screenshot ${i + 1}: the vision model needs a one-time license acceptance — open ${RECONCILE_MODEL} once in the Cloudflare Workers AI Playground and accept Meta's terms, then retry.`
+          : `Screenshot ${i + 1}: couldn't read it (${msg}).`
       );
       pages.push({ error: msg });
     }
   }
 
-  return jsonResponse({ ...mergeExtractions(pages), pages, warnings, model });
+  return jsonResponse({ ...mergeExtractions(pages), pages, warnings, model, today });
 }
 
 // Snapshot whatever is currently saved for this user into cashflow_history
