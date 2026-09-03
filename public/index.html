@@ -28,14 +28,21 @@
 .moveCol{display:flex;flex-direction:column;gap:2px}.moveBtn{width:28px;height:16px;font-size:9px;line-height:1;border:1px solid rgba(37,159,138,.3);background:transparent;color:var(--mint);border-radius:4px;cursor:pointer;padding:0;font-family:"Josefin Sans",sans-serif}.moveBtn:disabled{opacity:.22;cursor:default}.moveBtn:hover:not(:disabled){border-color:var(--mint);color:var(--mint-pale)}
 .acctTabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}.acctTab{border:1px solid rgba(37,159,138,.3);background:var(--jungle);color:var(--dim);border-radius:20px;padding:8px 16px;font-family:"Josefin Sans",sans-serif;font-weight:600;font-size:13px;cursor:pointer;transition:border-color .15s,color .15s,background .15s}.acctTab .tabBal{font-family:"DM Mono",monospace;font-size:11px;margin-left:8px;opacity:.85}.acctTab:hover{border-color:var(--mint);color:var(--mint-pale)}.acctTab.active{background:var(--gold);color:var(--black);border-color:var(--gold)}.acctTab.active .tabBal{color:var(--black)}
 .totalCard{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:14px;padding:14px 18px}.totalCard .label{font-size:10px;text-transform:uppercase;letter-spacing:.2em;color:var(--mint);font-weight:700}.totalCard .val{font:italic 700 24px "Playfair Display",Georgia,serif;color:var(--gold-light)}.totalBreak{font-family:"DM Mono",monospace;font-size:11px;color:var(--dim);margin-top:4px}
-@media(max-width:760px){.mast{align-items:flex-start;flex-direction:column}.grid{grid-template-columns:1fr}.formgrid{grid-template-columns:1fr 1fr}.event{grid-template-columns:70px minmax(0,1fr) 105px 26px 24px 22px;gap:7px;padding:11px 9px}.delBtn{width:22px;height:22px;font-size:12px}.desc{font-size:13px}.note{font-size:10px}.amt{font-size:12px}.startInput{width:145px;font-size:22px}.weekHead{padding:11px 12px}.wrap{padding:15px 10px 45px}.moveBtn{width:24px;height:15px;font-size:8px}.acctTab{padding:7px 12px;font-size:12px}}
+.recDrop{border:1.5px dashed rgba(37,159,138,.4);border-radius:10px;padding:26px 16px;text-align:center;cursor:pointer;background:var(--jungle);transition:border-color .15s,background .15s}.recDrop:hover,.recDrop.drag{border-color:var(--mint);background:var(--forest)}.recThumbs{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;justify-content:center}.recThumb{position:relative;width:70px;height:70px;border-radius:8px;overflow:hidden;border:1px solid var(--card-border)}.recThumb img{width:100%;height:100%;object-fit:cover}.recThumb button{position:absolute;top:1px;right:1px;width:18px;height:18px;line-height:1;border:0;border-radius:5px;background:rgba(0,0,0,.65);color:var(--warm-white);cursor:pointer;font-size:11px}
+.recHeader{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:14px}
+.recBalanceStrip{border-radius:10px;padding:12px 15px;margin-bottom:14px;font-family:"DM Mono",monospace;font-size:12px;line-height:1.7}.recBalanceStrip.ok{background:rgba(37,159,138,.16);color:var(--mint-pale);border:1px solid rgba(37,159,138,.4)}.recBalanceStrip.off{background:var(--warn-bg);color:var(--warn-text);border:1px solid var(--warn)}
+.recWarn{background:var(--warn-bg);color:var(--warn-text);border:1px solid var(--warn);border-radius:8px;padding:9px 12px;font-size:12px;margin-bottom:12px}
+.recGroupHead{font-size:10px;text-transform:uppercase;letter-spacing:.16em;color:var(--mint);font-weight:700;margin:16px 0 7px}
+.recRow{display:grid;grid-template-columns:96px minmax(0,1.4fr) 110px minmax(0,1fr) minmax(0,1fr);gap:9px;align-items:start;padding:10px 0;border-bottom:1px solid var(--line)}.recRow:last-child{border-bottom:0}.recRow.ignored{opacity:.4}.recRow input,.recRow select{width:100%;padding:7px;border:1px solid rgba(37,159,138,.3);border-radius:6px;background:var(--black);color:var(--warm-white);font:inherit;font-family:"Josefin Sans",sans-serif;font-size:12px}.recRow .recDate input{font-family:"DM Mono",monospace}.recMatchNote{font-size:10.5px;color:var(--dim);font-family:"DM Mono",monospace;margin-top:4px;grid-column:2/-1}
+.recChip{display:inline-block;font-size:9px;letter-spacing:.06em;padding:3px 7px;border-radius:20px;font-weight:700;font-family:"Josefin Sans",sans-serif;margin-top:6px}.recChip.confirm{background:rgba(37,159,138,.16);color:var(--mint)}.recChip.add{background:rgba(201,168,76,.18);color:var(--gold-light)}.recChip.unposted{background:var(--warn-bg);color:var(--warn-text)}
+@media(max-width:760px){.recRow{grid-template-columns:1fr;gap:6px}.recMatchNote{grid-column:1/-1}.recHeader{grid-template-columns:1fr}.mast{align-items:flex-start;flex-direction:column}.grid{grid-template-columns:1fr}.formgrid{grid-template-columns:1fr 1fr}.event{grid-template-columns:70px minmax(0,1fr) 105px 26px 24px 22px;gap:7px;padding:11px 9px}.delBtn{width:22px;height:22px;font-size:12px}.desc{font-size:13px}.note{font-size:10px}.amt{font-size:12px}.startInput{width:145px;font-size:22px}.weekHead{padding:11px 12px}.wrap{padding:15px 10px 45px}.moveBtn{width:24px;height:15px;font-size:8px}.acctTab{padding:7px 12px;font-size:12px}}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header class="mast">
     <div><div class="eyebrow">The Tobacco Center</div><h1>Cash Flow Companion</h1><div class="sub">A practical cash calendar for keeping the shop ahead of the next draft, order, and deposit.</div></div>
-    <div class="actions"><button class="btn" id="exportBtn">Export backup</button><button class="btn" id="importBtn">Import</button><button class="btn" id="historyBtn">History</button><button class="btn" id="archiveBtn">Archive</button><button class="btn" id="scorecardBtn">Bank Readiness</button><button class="btn primary" id="addTop">+ Add event</button><input id="fileInput" class="hidden" type="file" accept="application/json"></div>
+    <div class="actions"><button class="btn" id="exportBtn">Export backup</button><button class="btn" id="importBtn">Import</button><button class="btn" id="historyBtn">History</button><button class="btn" id="archiveBtn">Archive</button><button class="btn" id="scorecardBtn">Bank Readiness</button><button class="btn" id="reconcileBtn">Reconcile</button><button class="btn primary" id="addTop">+ Add event</button><input id="fileInput" class="hidden" type="file" accept="application/json"></div>
   </header>
 
   <div class="card totalCard">
@@ -109,6 +116,35 @@
       <div class="field checkField"><input id="mCUResolved" type="checkbox" class="check"><label for="mCUResolved">State Employees CU item resolved</label></div>
     </div>
     <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:14px"><button class="btn" id="cancelMonth">Cancel</button><button class="btn primary" id="saveMonth">Save month</button></div>
+  </section>
+
+  <section class="card add hidden" id="reconcileCard">
+    <h3 style="margin-bottom:4px">Reconcile from bank screenshots</h3>
+    <div class="hint" style="margin-bottom:14px">Upload screenshots of one account — the balance header plus the transaction list. The app reads them, matches what it finds against that account's calendar, and shows you what to confirm, add, or check off. <b>Nothing changes until you review and press Apply</b>, and Apply can be undone from History. Screenshots are sent to Cloudflare's AI to read the text, then discarded — they are not stored.</div>
+
+    <div id="recStep1">
+      <div class="field" style="max-width:260px;margin-bottom:12px"><label>Account these screenshots are for</label><select id="recAccount" class="select"></select></div>
+      <div id="recDrop" class="recDrop">
+        <input id="recFiles" class="hidden" type="file" accept="image/*" multiple>
+        <div><b>Tap to choose screenshots</b>, drop them here, or paste</div>
+        <div class="small" style="margin-top:4px">Up to 6 at once. Long transaction lists: take a few overlapping screenshots.</div>
+        <div class="recThumbs" id="recThumbs"></div>
+      </div>
+      <div id="recStatus" class="hint" style="margin-top:10px"></div>
+      <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px"><button class="btn" id="recCancel">Cancel</button><button class="btn primary" id="recRead">Read screenshots</button></div>
+    </div>
+
+    <div id="recStep2" class="hidden">
+      <div class="recHeader">
+        <div class="field"><label>Statement date (as of)</label><input id="recAsOf" class="input" type="date"></div>
+        <div class="field"><label>Bank posted / current balance</label><input id="recPosted" class="input" inputmode="decimal" placeholder="—"></div>
+        <div class="field"><label>Bank available balance</label><input id="recAvail" class="input" inputmode="decimal" placeholder="—"></div>
+      </div>
+      <div id="recWarnings"></div>
+      <div id="recBalanceStrip" class="recBalanceStrip"></div>
+      <div id="recProposals"></div>
+      <div style="display:flex;justify-content:space-between;gap:8px;margin-top:18px"><button class="btn" id="recBack">Back</button><div style="display:flex;gap:8px"><button class="btn" id="recCancel2">Cancel</button><button class="btn primary" id="recApply">Apply</button></div></div>
+    </div>
   </section>
 
   <main id="events"></main>
@@ -204,20 +240,25 @@ function migrateIfNeeded(x){
 let saveTimer=null;
 async function save(){
   clearTimeout(saveTimer);
+  state.savedAt=Date.now();
   saveTimer=setTimeout(async()=>{
-    try{
-      const r=await fetch("/api/state",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify(state)});
-      if(!r.ok) throw new Error();
-    }catch(e){ localStorage.setItem(KEY,JSON.stringify(state)); }
+    const body=JSON.stringify(state);
+    // Always mirror to this device first — it's the offline cache and the
+    // tie-breaker in loadState — then push to the cloud.
+    try{ localStorage.setItem(KEY,body); }catch(e){}
+    try{ await fetch("/api/state",{method:"PUT",headers:{"Content-Type":"application/json"},body}); }catch(e){}
   },150);
 }
 async function loadState(){
-  try{
-    const r=await fetch("/api/state");
-    if(r.ok){const x=await r.json(); let m=migrateIfNeeded(x); if(m){state=m; ensureScorecard(); return;}}
-  }catch(e){}
-  const local=JSON.parse(localStorage.getItem(KEY)||"null");
-  let m=migrateIfNeeded(local);
+  let server=null,local=null;
+  try{ const r=await fetch("/api/state"); if(r.ok) server=await r.json(); }catch(e){}
+  try{ local=JSON.parse(localStorage.getItem(KEY)||"null"); }catch(e){}
+  // Last-write-wins: whichever copy was saved most recently. On a tie (older
+  // saves, or the very first load after this update) prefer this device's
+  // copy, since the cloud save was previously failing for multi-account data.
+  let pick=server;
+  if(local && (!server || Number(local.savedAt||0) >= Number(server.savedAt||0))) pick=local;
+  let m=migrateIfNeeded(pick) || migrateIfNeeded(server) || migrateIfNeeded(local);
   if(m) state=m;
   ensureScorecard();
 }
@@ -388,7 +429,7 @@ function deleteEvent(id){
 function editAmount(el){let id=+el.dataset.edit,e=currentAccount().events.find(x=>x.id===id);if(!e)return;let input=document.createElement("input");input.value=Math.abs(e.amount).toFixed(2);el.innerHTML="";el.appendChild(input);input.focus();input.select();let done=false;let commit=()=>{if(done)return;done=true;let n=parseFloat(input.value);if(Number.isFinite(n)){e.amount=(e.amount<0?-1:1)*n;save()}render()};let cancel=()=>{if(done)return;done=true;render()};input.onblur=commit;input.onkeydown=x=>{if(x.key==="Enter")commit();if(x.key==="Escape")cancel()}}
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 document.getElementById("startBalance").onchange=e=>{let n=parseFloat(e.target.value);if(Number.isFinite(n)){currentAccount().start=n;save();render()}};
-document.getElementById("addTop").onclick=()=>{document.getElementById("historyCard").classList.add("hidden");document.getElementById("archiveCard").classList.add("hidden");document.getElementById("scorecardCard").classList.add("hidden");document.getElementById("monthFormCard").classList.add("hidden");document.getElementById("addCard").classList.remove("hidden");document.getElementById("addTargetLabel").textContent=accountName(state.activeAccount);document.getElementById("newDate").value=new Date().toISOString().slice(0,10);document.getElementById("newDesc").focus()};
+document.getElementById("addTop").onclick=()=>{document.getElementById("historyCard").classList.add("hidden");document.getElementById("archiveCard").classList.add("hidden");document.getElementById("scorecardCard").classList.add("hidden");document.getElementById("monthFormCard").classList.add("hidden");document.getElementById("reconcileCard").classList.add("hidden");document.getElementById("addCard").classList.remove("hidden");document.getElementById("addTargetLabel").textContent=accountName(state.activeAccount);document.getElementById("newDate").value=new Date().toISOString().slice(0,10);document.getElementById("newDesc").focus()};
 document.getElementById("cancelAdd").onclick=()=>document.getElementById("addCard").classList.add("hidden");
 document.getElementById("saveAdd").onclick=()=>{let d=document.getElementById("newDate").value,desc=document.getElementById("newDesc").value.trim(),n=parseFloat(document.getElementById("newAmount").value),dir=document.getElementById("newDirection").value,note=document.getElementById("newNote").value.trim();if(!d||!desc||!Number.isFinite(n))return alert("Please enter a date, description, and amount.");currentAccount().events.push({id:Date.now(),date:d,desc,amount:dir==="out"?-Math.abs(n):Math.abs(n),note:note||"manual item",kind:dir==="out"?"action":"action",done:false,category:dir==="out"?"Vendor / Payment":"Deposit"});save();document.getElementById("addCard").classList.add("hidden");["newDesc","newAmount","newNote"].forEach(id=>document.getElementById(id).value="");render()};
 document.getElementById("exportBtn").onclick=()=>{let blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="cash-flow-companion-backup.json";a.click();URL.revokeObjectURL(a.href)};
@@ -422,9 +463,9 @@ async function loadHistory(){
     });
   }catch{list.innerHTML="<div class=\"hint\">Could not load history right now.</div>"}
 }
-document.getElementById("historyBtn").onclick=()=>{document.getElementById("addCard").classList.add("hidden");document.getElementById("archiveCard").classList.add("hidden");document.getElementById("scorecardCard").classList.add("hidden");document.getElementById("monthFormCard").classList.add("hidden");document.getElementById("historyCard").classList.remove("hidden");loadHistory()};
+document.getElementById("historyBtn").onclick=()=>{document.getElementById("addCard").classList.add("hidden");document.getElementById("archiveCard").classList.add("hidden");document.getElementById("scorecardCard").classList.add("hidden");document.getElementById("monthFormCard").classList.add("hidden");document.getElementById("reconcileCard").classList.add("hidden");document.getElementById("historyCard").classList.remove("hidden");loadHistory()};
 document.getElementById("closeHistory").onclick=()=>document.getElementById("historyCard").classList.add("hidden");
-document.getElementById("archiveBtn").onclick=()=>{document.getElementById("addCard").classList.add("hidden");document.getElementById("historyCard").classList.add("hidden");document.getElementById("scorecardCard").classList.add("hidden");document.getElementById("monthFormCard").classList.add("hidden");document.getElementById("archiveCard").classList.remove("hidden");renderArchive()};
+document.getElementById("archiveBtn").onclick=()=>{document.getElementById("addCard").classList.add("hidden");document.getElementById("historyCard").classList.add("hidden");document.getElementById("scorecardCard").classList.add("hidden");document.getElementById("monthFormCard").classList.add("hidden");document.getElementById("reconcileCard").classList.add("hidden");document.getElementById("archiveCard").classList.remove("hidden");renderArchive()};
 document.getElementById("closeArchive").onclick=()=>document.getElementById("archiveCard").classList.add("hidden");
 
 // ---- Bank Readiness Scorecard ----
@@ -614,7 +655,7 @@ document.getElementById("mMonth").onchange=()=>{
   if(v) fillMonthForm(autoDefaultsFor(v));
 };
 function closeMonthForm(){document.getElementById("monthFormCard").classList.add("hidden");document.getElementById("scorecardCard").classList.remove("hidden")}
-document.getElementById("scorecardBtn").onclick=()=>{document.getElementById("addCard").classList.add("hidden");document.getElementById("historyCard").classList.add("hidden");document.getElementById("archiveCard").classList.add("hidden");document.getElementById("monthFormCard").classList.add("hidden");document.getElementById("scorecardCard").classList.remove("hidden");renderScorecard()};
+document.getElementById("scorecardBtn").onclick=()=>{document.getElementById("addCard").classList.add("hidden");document.getElementById("historyCard").classList.add("hidden");document.getElementById("archiveCard").classList.add("hidden");document.getElementById("monthFormCard").classList.add("hidden");document.getElementById("reconcileCard").classList.add("hidden");document.getElementById("scorecardCard").classList.remove("hidden");renderScorecard()};
 document.getElementById("closeScorecard").onclick=()=>document.getElementById("scorecardCard").classList.add("hidden");
 document.getElementById("logMonthBtn").onclick=()=>openMonthForm(null);
 document.getElementById("cancelMonth").onclick=()=>closeMonthForm();
@@ -646,6 +687,413 @@ document.getElementById("saveMonth").onclick=()=>{
   renderScorecard();
 };
 
+// ---- Reconcile from bank screenshots ---------------------------------------
+// Upload screenshots of one account. POST them to /api/reconcile, which runs a
+// vision model server-side and returns the transactions + balances it can read
+// out of them. Everything after that — matching those against the account's
+// calendar, proposing what to confirm / add / flag, the balance check — runs
+// here in the browser at no cost. Nothing is written until Apply, which goes
+// through the normal save() (snapshotted, so it's undoable from History).
+const REC_MAX_IMAGES=6;
+// Bank-feed text -> real identity. First match wins. Seeded from the shop's
+// known vendors and recurring drafts (handoff doc). Used to label a new
+// transaction and to help match one against an event already named for it.
+// Regexes match on the description with runs of non-letters collapsed to a
+// single space (recNorm), so "GOOGLE *GSUITE_cigar" -> "google gsuite cigar".
+const REC_DECODER=[
+ {re:/hc cigars daytona/,                       desc:"KB payment",                      category:"Vendor / Payment"},
+ {re:/forward financing/,                       desc:"Forward Financing MCA draft",     category:"Automatic"},
+ {re:/clover fee/,                              desc:"Clover fees",                     category:"Automatic"},
+ {re:/accountants ?world|aw payroll/,           desc:"Chip payroll (AccountantsWorld)", category:"Automatic"},
+ {re:/payroll tax|eftps|usataxpymt|tax pymt|tax pmt/, desc:"Payroll tax debit",         category:"Automatic"},
+ {re:/card processing|month ?end charge|merchant (fees?|disc|charge|chg)|disc fee/, desc:"M&T card processing fee", category:"Automatic"},
+ {re:/atm cash deposit/,                        desc:"ATM cash deposit",                category:"Deposit"},
+ {re:/merch(ant)? (dep|dpst|bkcd|deposit)|bankcard|clover (dep|dpst|settl|deposit)|card deposit|deposit clover|mtot dep/, desc:"Card deposit", category:"Automatic"},
+ {re:/google ?(workspace|gsuite|g suite)/,      desc:"Google Workspace",                category:"Automatic"},
+ {re:/ppl elec/,                                desc:"PPL Electric bill",               category:"Vendor / Payment"},
+ {re:/espinosa/,                                desc:"Espinosa Cigars",                 category:"Vendor / Payment"},
+ {re:/international plastic/,                    desc:"International Plastics",           category:"Vendor / Payment"},
+ {re:/whole leaf tobacco/,                      desc:"Whole Leaf Tobacco",              category:"Vendor / Payment"},
+ {re:/esteban carreras/,                        desc:"Esteban Carreras Cigars",         category:"Vendor / Payment"},
+ {re:/avowed/,                                  desc:"Avowed Cigars",                   category:"Vendor / Payment"},
+ {re:/action label/,                            desc:"Action Label",                    category:"Vendor / Payment"}
+];
+const REC_CATEGORIES=["Automatic","Deposit","Vendor / Payment","Transfer"];
+function recNorm(s){return String(s||"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();}
+function recDecode(s){let n=recNorm(s);for(const d of REC_DECODER){if(d.re.test(n))return d;}return null;}
+function recKindFor(cat){return cat==="Automatic"?"auto":"action";}
+function recNum(v){let n=parseFloat(String(v==null?"":v).replace(/[$,\s]/g,""));return Number.isFinite(n)?n:NaN;}
+function recValidDate(s){return typeof s==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(s);}
+
+let recState={account:"income",files:[],thumbUrls:[],reading:false,extraction:null,rows:[],unposted:[],asOf:""};
+
+function recBlankState(){return {account:"income",files:[],thumbUrls:[],reading:false,extraction:null,rows:[],unposted:[],asOf:""};}
+function recClearFlags(){try{Object.values(state.accounts).forEach(a=>a.events.forEach(e=>{delete e._recTaken;}));}catch(e){}}
+function openReconcile(){
+  ["addCard","historyCard","archiveCard","scorecardCard","monthFormCard"].forEach(id=>document.getElementById(id).classList.add("hidden"));
+  document.getElementById("reconcileCard").classList.remove("hidden");
+  recState=recBlankState();
+  recState.account=state.activeAccount;
+  let sel=document.getElementById("recAccount");
+  sel.innerHTML=ACCOUNT_DEFS.map(d=>`<option value="${d.id}">${esc(d.name)}</option>`).join("");
+  sel.value=recState.account;
+  document.getElementById("recStep1").classList.remove("hidden");
+  document.getElementById("recStep2").classList.add("hidden");
+  document.getElementById("recStatus").textContent="";
+  document.getElementById("recProposals").innerHTML="";
+  renderRecThumbs();
+}
+function closeReconcile(){
+  recState.thumbUrls.forEach(u=>URL.revokeObjectURL(u));
+  recClearFlags();
+  recState=recBlankState();
+  document.getElementById("reconcileCard").classList.add("hidden");
+}
+document.getElementById("reconcileBtn").onclick=openReconcile;
+document.getElementById("recCancel").onclick=closeReconcile;
+document.getElementById("recCancel2").onclick=closeReconcile;
+document.getElementById("recBack").onclick=()=>{document.getElementById("recStep2").classList.add("hidden");document.getElementById("recStep1").classList.remove("hidden");};
+document.getElementById("recAccount").onchange=e=>{recState.account=e.target.value;};
+
+const recDropEl=document.getElementById("recDrop"),recFilesEl=document.getElementById("recFiles");
+recDropEl.onclick=()=>recFilesEl.click();
+recFilesEl.onchange=e=>{addRecFiles(e.target.files);recFilesEl.value="";};
+recDropEl.addEventListener("dragover",e=>{e.preventDefault();recDropEl.classList.add("drag");});
+recDropEl.addEventListener("dragleave",()=>recDropEl.classList.remove("drag"));
+recDropEl.addEventListener("drop",e=>{e.preventDefault();recDropEl.classList.remove("drag");if(e.dataTransfer)addRecFiles(e.dataTransfer.files);});
+document.addEventListener("paste",e=>{
+  if(document.getElementById("reconcileCard").classList.contains("hidden"))return;
+  if(document.getElementById("recStep1").classList.contains("hidden"))return;
+  let items=[...((e.clipboardData&&e.clipboardData.items)||[])];
+  let imgs=items.filter(i=>i.kind==="file"&&i.type.indexOf("image/")===0).map(i=>i.getAsFile()).filter(Boolean);
+  if(imgs.length)addRecFiles(imgs);
+});
+function addRecFiles(list){
+  let status=document.getElementById("recStatus");
+  for(const f of [...list]){
+    if(!f||f.type.indexOf("image/")!==0)continue;
+    if(recState.files.length>=REC_MAX_IMAGES){status.textContent="You can read up to "+REC_MAX_IMAGES+" screenshots at a time.";break;}
+    recState.files.push(f);
+  }
+  renderRecThumbs();
+}
+function renderRecThumbs(){
+  recState.thumbUrls.forEach(u=>URL.revokeObjectURL(u));
+  recState.thumbUrls=recState.files.map(f=>URL.createObjectURL(f));
+  let el=document.getElementById("recThumbs");
+  el.innerHTML=recState.files.map((f,i)=>`<div class="recThumb"><img src="${recState.thumbUrls[i]}" alt=""><button type="button" data-rmfile="${i}" aria-label="Remove screenshot">✕</button></div>`).join("");
+  el.querySelectorAll("[data-rmfile]").forEach(b=>b.onclick=ev=>{ev.stopPropagation();recState.files.splice(+b.dataset.rmfile,1);renderRecThumbs();});
+}
+function recCompress(file){
+  return new Promise((resolve,reject)=>{
+    let url=URL.createObjectURL(file),img=new Image();
+    img.onload=()=>{
+      URL.revokeObjectURL(url);
+      let s=Math.min(1,1600/(img.width||1600)),w=Math.max(1,Math.round(img.width*s)),h=Math.max(1,Math.round(img.height*s));
+      let c=document.createElement("canvas");c.width=w;c.height=h;
+      c.getContext("2d").drawImage(img,0,0,w,h);
+      try{resolve(c.toDataURL("image/jpeg",0.85));}catch(err){reject(err);}
+    };
+    img.onerror=()=>{URL.revokeObjectURL(url);reject(new Error("couldn't open one of the image files"));};
+    img.src=url;
+  });
+}
+document.getElementById("recRead").onclick=async()=>{
+  if(recState.reading)return;
+  let status=document.getElementById("recStatus"),btn=document.getElementById("recRead");
+  if(!recState.files.length){status.textContent="Add at least one screenshot first.";return;}
+  recState.reading=true;btn.disabled=true;status.textContent="Preparing screenshots…";
+  try{
+    let images=[];
+    for(const f of recState.files)images.push(await recCompress(f));
+    status.textContent="Reading the screenshots… this usually takes 10–30 seconds.";
+    let r=await fetch("/api/reconcile",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({account:recState.account,images})});
+    let data=null;try{data=await r.json();}catch(e){}
+    if(!r.ok||!data){status.textContent=(data&&data.error)||("Couldn't read the screenshots (error "+r.status+"). Try again shortly.");recState.reading=false;btn.disabled=false;return;}
+    recState.extraction=data;
+    buildProposals();
+    status.textContent="";
+    document.getElementById("recStep1").classList.add("hidden");
+    document.getElementById("recStep2").classList.remove("hidden");
+    renderReconcile();
+  }catch(e){
+    status.textContent="Something went wrong: "+((e&&e.message)||e);
+  }
+  recState.reading=false;btn.disabled=false;
+};
+
+// ---- matching: score each screenshot row against this account's events ----
+function recTokens(s){return new Set(String(s||"").toLowerCase().match(/[a-z0-9]{3,}/g)||[]);}
+function recOverlap(a,b){let A=recTokens(a),B=recTokens(b);if(!A.size||!B.size)return 0;let n=0;A.forEach(t=>{if(B.has(t))n++;});return n/Math.min(A.size,B.size);}
+function recDays(a,b){return Math.abs((new Date(a+"T12:00:00")-new Date(b+"T12:00:00"))/86400000);}
+function recIsEstimate(note){return /\best\b|estimate|placeholder|projected|blended|run.?rate|could run|~/i.test(String(note||""));}
+function recSigned(t){return t.direction==="in"?Math.abs(Number(t.amount)):-Math.abs(Number(t.amount));}
+function recMatch(txn,events){
+  let want=recSigned(txn),dec=recDecode(txn.description),name=dec?dec.desc:txn.description;
+  let best=null,bestScore=0;
+  for(const e of events){
+    if(e._recTaken)continue;
+    if(want!==0&&e.amount!==0&&(want<0)!==(e.amount<0))continue;
+    let amtDiff=Math.abs(Math.abs(e.amount)-Math.abs(want)),dd=recDays(txn.date,e.date);
+    if(dd>21)continue;
+    let ov=Math.max(recOverlap(name,e.desc),dec?recOverlap(dec.desc,e.desc):0),est=recIsEstimate(e.note),score=0;
+    if(amtDiff<=0.01)score+=4;
+    else if(est&&dd<=3&&(ov>=0.25||(txn.direction==="in"&&/deposit|card|sales|merch/i.test(e.desc))))score+=4;
+    else if(est&&dd<=6&&ov>=0.5)score+=3;
+    else continue;
+    if(dd<=1)score+=3;else if(dd<=3)score+=2;else if(dd<=7)score+=1;
+    if(ov>=0.5)score+=2;else if(ov>=0.25)score+=1;
+    if(score>bestScore){bestScore=score;best=e;}
+  }
+  return bestScore>=6?best:null;
+}
+function buildProposals(){
+  let ex=recState.extraction,events=accountById(recState.account).events;
+  events.forEach(e=>{delete e._recTaken;});
+  let asOf=recValidDate(ex.asOf)?ex.asOf:new Date().toISOString().slice(0,10);
+  recState.asOf=asOf;
+  let txns=[...(ex.transactions||[])].sort((a,b)=>((a.status==="pending")-(b.status==="pending"))||String(a.date).localeCompare(String(b.date)));
+  recState.unposted=[];
+  recState.rows=txns.map((txn,i)=>{
+    if(!recValidDate(txn.date))txn.date=asOf;
+    let m=recMatch(txn,events);if(m)m._recTaken=true;
+    let dec=recDecode(txn.description);
+    // Matched: keep the category Gray already gave the event. Unmatched: use
+    // the decoder's, else guess from direction.
+    let cat=m?m.category:(dec?dec.category:(txn.direction==="in"?"Deposit":"Vendor / Payment"));
+    return {
+      i,txn,
+      date:txn.date,
+      desc:m?m.desc:(dec?dec.desc:((txn.description||"").trim()||"(no description)")),
+      amount:Math.abs(Number(txn.amount)||0),
+      direction:txn.direction==="in"?"in":"out",
+      category:REC_CATEGORIES.indexOf(cat)>=0?cat:(txn.direction==="in"?"Deposit":"Vendor / Payment"),
+      status:txn.status==="pending"?"pending":"posted",
+      action:m?("match:"+m.id):"add",
+      matchId:m?m.id:null
+    };
+  });
+  recBuildUnposted();
+}
+function recBuildUnposted(){
+  let events=accountById(recState.account).events,prev={};
+  recState.unposted.forEach(u=>prev[u.id]=u.action);
+  recState.unposted=events.filter(e=>!e.done&&!e._recTaken&&e.date<=recState.asOf&&Number(e.amount)!==0)
+    .sort((a,b)=>a.date.localeCompare(b.date))
+    .map(e=>({id:e.id,action:prev[e.id]||"keep"}));
+}
+function recRecomputeTaken(){
+  let events=accountById(recState.account).events;
+  events.forEach(e=>{e._recTaken=false;});
+  recState.rows.forEach(r=>{if(String(r.action).indexOf("match:")===0){let e=events.find(x=>x.id===r.matchId);if(e)e._recTaken=true;}});
+  recBuildUnposted();
+}
+function recCandidates(r){
+  return accountById(recState.account).events
+    .filter(e=>!e._recTaken||e.id===r.matchId)
+    .sort((a,b)=>recDays(r.date,a.date)-recDays(r.date,b.date))
+    .slice(0,8).map(e=>e.id);
+}
+function recEventLabel(e){return e?(e.desc+" · "+fmtDate(e.date)+" · "+money(e.amount)):"(removed)";}
+
+// ---- review UI ----------------------------------------------------------
+function renderReconcile(){
+  recRecomputeTaken();
+  let ex=recState.extraction;
+  document.getElementById("recAsOf").value=recState.asOf;
+  let pEl=document.getElementById("recPosted"),aEl=document.getElementById("recAvail");
+  if(document.activeElement!==pEl&&!pEl.dataset.touched)pEl.value=ex.postedBalance!=null?ex.postedBalance:"";
+  if(document.activeElement!==aEl&&!aEl.dataset.touched)aEl.value=ex.availableBalance!=null?ex.availableBalance:"";
+  let warns=ex.warnings||[];
+  document.getElementById("recWarnings").innerHTML=warns.length?('<div class="recWarn">'+warns.map(esc).join("<br>")+'</div>'):"";
+  let events=accountById(recState.account).events,html="";
+  if(recState.rows.length){
+    html+='<div class="recGroupHead">Transactions read from your screenshots ('+recState.rows.length+')</div>';
+    html+=recState.rows.map(r=>recRowHtml(r,events)).join("");
+  }else{
+    html+='<div class="hint">No transactions were read. Go Back and try clearer, more zoomed-in screenshots.</div>';
+  }
+  if(recState.unposted.length){
+    html+='<div class="recGroupHead">In your plan on/before '+esc(fmtDate(recState.asOf))+', but not seen on the statement ('+recState.unposted.length+')</div>';
+    html+=recState.unposted.map(u=>recUnpostedHtml(u,events)).join("");
+  }
+  document.getElementById("recProposals").innerHTML=html;
+  wireReconcile();
+  renderRecBalance();
+  let n=recState.rows.filter(r=>r.action!=="ignore").length+recState.unposted.filter(u=>u.action!=="keep").length;
+  document.getElementById("recApply").textContent=n?("Apply "+n+" change"+(n===1?"":"s")):"Apply";
+}
+function recRowHtml(r,events){
+  let matched=String(r.action).indexOf("match:")===0;
+  let chip=r.action==="ignore"?'<span class="recChip">SKIP</span>'
+    :r.action==="add"?'<span class="recChip add">'+(r.status==="pending"?"ADD · PENDING":"ADD NEW")+'</span>'
+    :'<span class="recChip confirm">'+(r.status==="pending"?"PENDING":"CONFIRM")+'</span>';
+  let opts='<option value="add"'+(r.action==="add"?" selected":"")+'>➕ Add as a new event</option>';
+  recCandidates(r).forEach(cid=>{let e=events.find(x=>x.id===cid);if(!e)return;opts+='<option value="match:'+cid+'"'+(r.action==="match:"+cid?" selected":"")+'>↔ '+esc(recEventLabel(e))+'</option>';});
+  opts+='<option value="ignore"'+(r.action==="ignore"?" selected":"")+'>✕ Ignore this row</option>';
+  let notes="";
+  if(r.txn.description&&recNorm(r.txn.description)!==recNorm(r.desc))notes+='<div class="recMatchNote">bank text: “'+esc(r.txn.description)+'”'+(r.status==="pending"?" · pending":"")+'</div>';
+  if(matched){
+    let e=events.find(x=>x.id===r.matchId),ch=[];
+    if(e){
+      if(Math.abs(Math.abs(e.amount)-r.amount)>0.01)ch.push("amount "+money(e.amount)+" → "+money(r.direction==="in"?r.amount:-r.amount));
+      if(r.status!=="pending"&&e.date!==r.date)ch.push("date "+fmtDate(e.date)+" → "+fmtDate(r.date));
+      let verb=r.status==="pending"?("marks “"+esc(e.desc)+"” as pending at the bank (stays unchecked)"):("checks off “"+esc(e.desc)+"”");
+      notes+='<div class="recMatchNote">↔ '+verb+(ch.length?"; updates "+esc(ch.join(", ")):"")+'</div>';
+    }
+  }
+  return '<div class="recRow'+(r.action==="ignore"?" ignored":"")+'" data-rec="'+r.i+'">'+
+    '<div class="recDate"><input type="date" data-recfield="date" value="'+esc(r.date)+'">'+chip+'</div>'+
+    '<div class="recDesc"><input type="text" data-recfield="desc" value="'+esc(r.desc)+'"></div>'+
+    '<div><input type="text" inputmode="decimal" data-recfield="amount" value="'+r.amount.toFixed(2)+'"><select data-recfield="direction" style="margin-top:4px"><option value="in"'+(r.direction==="in"?" selected":"")+'>money in</option><option value="out"'+(r.direction==="out"?" selected":"")+'>money out</option></select></div>'+
+    '<div><select data-recfield="category">'+REC_CATEGORIES.map(c=>'<option'+(c===r.category?" selected":"")+'>'+c+'</option>').join("")+'</select></div>'+
+    '<div><select data-recfield="action">'+opts+'</select></div>'+
+    notes+'</div>';
+}
+function recUnpostedHtml(u,events){
+  let e=events.find(x=>x.id===u.id);if(!e)return"";
+  return '<div class="recRow" data-unp="'+u.id+'">'+
+    '<div class="recDate"><span class="date">'+esc(fmtDate(e.date))+'</span> <span class="recChip unposted">NOT ON STMT</span></div>'+
+    '<div class="recDesc"><div class="desc">'+esc(e.desc)+'</div><div class="note">'+esc(e.note||"")+'</div></div>'+
+    '<div class="amt '+(e.amount<0?"out":"in")+'">'+money(e.amount)+'</div>'+
+    '<div class="small" style="align-self:center">'+(e.kind==="auto"?"auto":"action")+'</div>'+
+    '<div><select data-unpaction="'+u.id+'">'+
+      '<option value="keep"'+(u.action==="keep"?" selected":"")+'>Leave in the plan (not posted yet)</option>'+
+      '<option value="done"'+(u.action==="done"?" selected":"")+'>Mark it cleared (check off)</option>'+
+      '<option value="delete"'+(u.action==="delete"?" selected":"")+'>Delete it from the plan</option>'+
+    '</select></div></div>';
+}
+function wireReconcile(){
+  let box=document.getElementById("recProposals");
+  box.querySelectorAll("[data-rec]").forEach(row=>{
+    let r=recState.rows[+row.dataset.rec];
+    row.querySelectorAll("[data-recfield]").forEach(inp=>{
+      let f=inp.dataset.recfield;
+      inp.onchange=()=>{
+        if(f==="amount"){let n=recNum(inp.value);r.amount=Number.isFinite(n)?Math.abs(n):0;renderRecBalance();}
+        else if(f==="desc"){r.desc=inp.value;}
+        else if(f==="category"){r.category=inp.value;}
+        else if(f==="direction"){r.direction=inp.value;renderReconcile();}
+        else if(f==="date"){r.date=recValidDate(inp.value)?inp.value:r.date;renderReconcile();}
+        else if(f==="action"){
+          r.action=inp.value;
+          r.matchId=String(inp.value).indexOf("match:")===0?+inp.value.split(":")[1]:null;
+          if(r.matchId!=null)recState.rows.forEach(o=>{if(o!==r&&o.action==="match:"+r.matchId){o.action="add";o.matchId=null;}});
+          renderReconcile();
+        }
+      };
+    });
+  });
+  box.querySelectorAll("[data-unpaction]").forEach(sel=>{
+    sel.onchange=()=>{let u=recState.unposted.find(x=>x.id===+sel.dataset.unpaction);if(u){u.action=sel.value;renderReconcile();}};
+  });
+  document.getElementById("recAsOf").onchange=()=>{let v=document.getElementById("recAsOf").value;if(recValidDate(v)){recState.asOf=v;renderReconcile();}};
+  document.getElementById("recPosted").oninput=e=>{e.target.dataset.touched="1";renderRecBalance();};
+  document.getElementById("recAvail").oninput=e=>{e.target.dataset.touched="1";renderRecBalance();};
+}
+
+// ---- balance check ----------------------------------------------------
+// Adds up only what has actually POSTED after these changes are applied:
+// posted screenshot rows (matched or added), plus existing events that are
+// already checked off (or that you check off here). Pending rows and planned
+// items the statement doesn't show are left out — they're reported separately.
+// That figure should equal the bank's posted balance to the penny; a gap
+// means a transaction was missed or a number misread.
+function recRound(n){return Math.round((n+Number.EPSILON)*100)/100;}
+function recAsOfVal(){return document.getElementById("recAsOf").value||recState.asOf;}
+function recReconciledPosted(){
+  let acct=accountById(recState.account),asOf=recAsOfVal();
+  let matchedPosted={},matchedPending=new Set(),drop=new Set(),forceDone=new Set();
+  recState.rows.forEach(r=>{
+    if(String(r.action).indexOf("match:")!==0)return;
+    if(r.status==="pending")matchedPending.add(r.matchId);
+    else matchedPosted[r.matchId]=(r.direction==="in"?1:-1)*r.amount;
+  });
+  recState.unposted.forEach(u=>{if(u.action==="delete")drop.add(u.id);else if(u.action==="done")forceDone.add(u.id);});
+  let total=Number(acct.start);
+  acct.events.forEach(e=>{
+    if(drop.has(e.id)||matchedPending.has(e.id))return;
+    if(matchedPosted[e.id]!==undefined){total+=matchedPosted[e.id];return;}
+    if(e.date<=asOf&&(e.done||forceDone.has(e.id)))total+=Number(e.amount);
+  });
+  recState.rows.forEach(r=>{if(r.action==="add"&&r.status!=="pending"&&r.date<=asOf)total+=(r.direction==="in"?1:-1)*r.amount;});
+  return recRound(total);
+}
+function recNotYetPosted(){
+  let acct=accountById(recState.account),sum=0,n=0;
+  recState.unposted.forEach(u=>{if(u.action==="keep"){let e=acct.events.find(x=>x.id===u.id);if(e){sum+=Number(e.amount);n++;}}});
+  recState.rows.forEach(r=>{if(r.status==="pending"&&r.action!=="ignore"){sum+=(r.direction==="in"?1:-1)*r.amount;n++;}});
+  return {sum:recRound(sum),n};
+}
+function renderRecBalance(){
+  let strip=document.getElementById("recBalanceStrip");
+  let posted=recNum(document.getElementById("recPosted").value);
+  let avail=recNum(document.getElementById("recAvail").value);
+  let recon=recReconciledPosted();
+  let lines=["Posted transactions add up to <b>"+money(recon)+"</b> in "+esc(accountName(recState.account))+" as of "+esc(fmtDate(recAsOfVal()))+"."];
+  let cls="",target=Number.isFinite(posted)?posted:(Number.isFinite(avail)?avail:null),isAvail=!Number.isFinite(posted)&&Number.isFinite(avail);
+  if(target!==null){
+    let d=recRound(recon-target);
+    if(Math.abs(d)<0.01){cls=" ok";lines.push("✓ Ties out to the bank's "+(isAvail?"available":"posted")+" balance ("+money(target)+")"+(isAvail?" — but that's the available figure; the posted/current balance is the exact check.":" exactly."));}
+    else{cls=" off";lines.push("✗ Bank's "+(isAvail?"available":"posted")+" balance is "+money(target)+" — a <b>"+money(d)+"</b> gap. Before applying, look for a transaction the screenshots missed, a misread amount, or a wrong money-in / money-out."+(isAvail?" (Available balance also nets out pending items, so some gap is expected — enter the posted/current balance for the real check.)":""));}
+  }else{
+    lines.push("Enter the bank's posted/current balance above to check this reconciles.");
+  }
+  let nyp=recNotYetPosted();
+  if(nyp.n)lines.push("—<br>"+nyp.n+" planned item"+(nyp.n===1?"":"s")+" ("+money(nyp.sum)+" net) "+(nyp.n===1?"isn't":"aren't")+" on the statement yet — kept in your plan. Your calendar balance stays that much ahead of the bank until they post.");
+  strip.className="recBalanceStrip"+cls;
+  strip.innerHTML=lines.join("<br>");
+}
+
+// ---- apply ------------------------------------------------------------
+function recRenumber(acct){
+  let rank=e=>e.amount>0?0:(e.kind==="auto"?1:2);
+  acct.events=[...acct.events].sort((a,b)=>a.date.localeCompare(b.date)||rank(a)-rank(b)||a.id-b.id);
+  acct.events.forEach((e,i)=>{e.id=i+1;delete e._recTaken;delete e.running;});
+}
+document.getElementById("recApply").onclick=()=>{
+  let acct=accountById(recState.account),asOf=document.getElementById("recAsOf").value||recState.asOf,n=0;
+  recState.rows.forEach(r=>{
+    if(String(r.action).indexOf("match:")!==0)return;
+    let e=acct.events.find(x=>x.id===r.matchId);if(!e)return;
+    let amt=recRound((r.direction==="in"?1:-1)*r.amount);
+    if(r.status==="pending"){
+      // Bank confirms this planned item is on its way: lock in the real
+      // amount and note it, but don't move the date or check it off.
+      if(Math.abs(e.amount-amt)>0.01)e.amount=amt;
+      e.note="pending at bank (seen "+asOf+")";
+    }else{
+      e.amount=amt;e.date=r.date;e.category=r.category;e.kind=recKindFor(r.category);
+      e.note="confirmed — reconciled from bank "+asOf;
+      e.done=true;
+    }
+    n++;
+  });
+  recState.rows.forEach(r=>{
+    if(r.action!=="add")return;
+    acct.events.push({
+      id:Date.now()+Math.floor(Math.random()*1e6),
+      date:r.date,desc:(r.desc||"").trim()||"(bank transaction)",
+      amount:recRound((r.direction==="in"?1:-1)*r.amount),
+      note:r.status==="pending"?("pending — from bank "+asOf):("reconciled from bank "+asOf),
+      kind:recKindFor(r.category),
+      done:r.status!=="pending"&&r.date<=asOf,
+      category:r.category
+    });
+    n++;
+  });
+  recState.unposted.forEach(u=>{
+    let e=acct.events.find(x=>x.id===u.id);if(!e)return;
+    if(u.action==="delete"){acct.events=acct.events.filter(x=>x.id!==u.id);n++;}
+    else if(u.action==="done"){e.done=true;e.note=(e.note?e.note+" · ":"")+"cleared (reconciled "+asOf+")";n++;}
+  });
+  recRenumber(acct);
+  save();
+  closeReconcile();
+  render();
+  if(!document.getElementById("archiveCard").classList.contains("hidden"))renderArchive();
+};
+
 loadState().then(render);
 
 // ---- Auto-update: detect a fresh deploy and pick it up without the user
@@ -655,7 +1103,7 @@ loadState().then(render);
 // waits, via a small banner, until the form closes.
 let baselineHtml=null, updateAvailable=false;
 function formsOpen(){
-  return ["addCard","historyCard","scorecardCard","monthFormCard"].some(id=>!document.getElementById(id).classList.contains("hidden"));
+  return ["addCard","historyCard","scorecardCard","monthFormCard","reconcileCard"].some(id=>!document.getElementById(id).classList.contains("hidden"));
 }
 async function checkForUpdate(){
   if(updateAvailable)return;
