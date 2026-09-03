@@ -1053,13 +1053,22 @@ function renderRecBalance(){
   let avail=recNum(document.getElementById("recAvail").value);
   let recon=recReconciledPosted();
   let lines=["Posted transactions add up to <b>"+money(recon)+"</b> in "+esc(accountName(recState.account))+" as of "+esc(fmtDate(recAsOfVal()))+"."];
-  let cls="",target=Number.isFinite(posted)?posted:(Number.isFinite(avail)?avail:null),isAvail=!Number.isFinite(posted)&&Number.isFinite(avail);
-  if(target!==null){
-    let d=recRound(recon-target);
-    if(Math.abs(d)<0.01){cls=" ok";lines.push("✓ Ties out to the bank's "+(isAvail?"available":"posted")+" balance ("+money(target)+")"+(isAvail?" — but that's the available figure; the posted/current balance is the exact check.":" exactly."));}
-    else{cls=" off";lines.push("✗ Bank's "+(isAvail?"available":"posted")+" balance is "+money(target)+" — a <b>"+money(d)+"</b> gap. Before applying, look for a transaction the screenshots missed, a misread amount, or a wrong money-in / money-out."+(isAvail?" (Available balance also nets out pending items, so some gap is expected — enter the posted/current balance for the real check.)":""));}
-  }else{
+  // Try both bank figures — the vision model often swaps the posted/available
+  // labels, so accept whichever one ties out.
+  let cands=[];
+  if(Number.isFinite(posted))cands.push({v:posted,d:recRound(recon-posted)});
+  if(Number.isFinite(avail))cands.push({v:avail,d:recRound(recon-avail)});
+  let cls="";
+  if(!cands.length){
     lines.push("Enter the bank's posted/current balance above to check this reconciles.");
+  }else{
+    let hit=cands.find(c=>Math.abs(c.d)<0.01);
+    if(hit){cls=" ok";lines.push("✓ Ties out to the bank balance ("+money(hit.v)+") exactly.");}
+    else{
+      let near=cands.reduce((a,b)=>Math.abs(b.d)<Math.abs(a.d)?b:a);
+      cls=" off";
+      lines.push("✗ Closest bank figure is "+money(near.v)+" — a <b>"+money(near.d)+"</b> gap. Before applying, check for a transaction the screenshots missed, a misread amount, a wrong money-in / money-out, or a wrong date.");
+    }
   }
   let nyp=recNotYetPosted();
   if(nyp.n)lines.push("—<br>"+nyp.n+" planned item"+(nyp.n===1?"":"s")+" ("+money(nyp.sum)+" net) "+(nyp.n===1?"isn't":"aren't")+" on the statement yet — kept in your plan. Your calendar balance stays that much ahead of the bank until they post.");

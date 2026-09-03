@@ -164,7 +164,7 @@ async function readImage(env, model, dataUrl, today) {
     }
   }
   if (!parsed.length) throw lastErr || new Error("could not read this screenshot");
-  return mergeExtractions(parsed); // union of the passes for this one image
+  return mergeExtractions(parsed, today); // union of the passes for this one image
 }
 
 function normDesc(s) {
@@ -189,15 +189,34 @@ function cleanDate(v) {
   return s && /^\d{4}-\d{2}-\d{2}$/.test(s) ? s : null;
 }
 
+// Llama routinely stamps the wrong YEAR on a row it otherwise read fine (it
+// only sees month + day). Snap the year to whichever of last year / this year
+// puts the date closest to today without landing in the future.
+function repairYear(dateStr, today) {
+  const d = cleanDate(dateStr);
+  if (!d || !today) return d;
+  const t = Date.parse(today + "T12:00:00");
+  let best = d, bestGap = Infinity;
+  const y0 = Number(today.slice(0, 4));
+  for (let dy = -1; dy <= 1; dy++) {
+    const cand = (y0 + dy) + d.slice(4);
+    const ct = Date.parse(cand + "T12:00:00");
+    if (Number.isNaN(ct) || ct - t > 86400000) continue;
+    const gap = Math.abs(ct - t);
+    if (gap < bestGap) { bestGap = gap; best = cand; }
+  }
+  return best;
+}
+
 // Combine per-screenshot results into one transaction list, dropping rows that
 // appear on more than one screenshot (overlapping scroll positions).
-function mergeExtractions(pages) {
+function mergeExtractions(pages, today) {
   const transactions = [];
   const seen = new Set();
   let asOf = null, postedBalance = null, availableBalance = null;
   for (const p of pages) {
     if (!p || !Array.isArray(p.transactions)) continue;
-    const pAsOf = cleanDate(p.asOf);
+    const pAsOf = repairYear(p.asOf, today);
     if (pAsOf && (!asOf || pAsOf > asOf)) asOf = pAsOf;
     if (postedBalance == null) postedBalance = cleanNum(p.postedBalance);
     if (availableBalance == null) availableBalance = cleanNum(p.availableBalance);
@@ -207,11 +226,12 @@ function mergeExtractions(pages) {
       if (amt == null) continue;
       const abs = Math.abs(amt);
       const dir = t.direction === "in" || (t.direction == null && amt > 0) ? "in" : "out";
-      const key = [cleanDate(t.date) || "", abs.toFixed(2), dir, normDesc(t.description)].join("|");
+      const date = repairYear(t.date, today) || "";
+      const key = [date, abs.toFixed(2), dir, normDesc(t.description)].join("|");
       if (seen.has(key)) continue;
       seen.add(key);
       transactions.push({
-        date: cleanDate(t.date) || "",
+        date,
         description: String(t.description || "").trim(),
         amount: abs,
         direction: dir,
@@ -268,7 +288,7 @@ async function handleReconcile(request, env) {
     }
   }
 
-  return jsonResponse({ ...mergeExtractions(pages), pages, warnings, model, today });
+  return jsonResponse({ ...mergeExtractions(pages, today), pages, warnings, model, today });
 }
 
 // Snapshot whatever is currently saved for this user into cashflow_history
