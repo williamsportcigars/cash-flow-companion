@@ -58,20 +58,23 @@ function extractSystem(today) {
   return `Today is ${today}. ` + EXTRACT_SYSTEM;
 }
 
-const EXTRACT_SYSTEM = `You read a screenshot of a bank account (usually the M&T mobile app) and output ONLY minified JSON. No prose, no markdown code fences.
+const EXTRACT_SYSTEM = `You are an OCR system for the M&T Bank mobile app "Account Details" screen. Output ONLY minified JSON, no prose, no markdown fences.
 
 Output shape:
-{"asOf":"YYYY-MM-DD or null","postedBalance":number or null,"availableBalance":number or null,"transactions":[{"date":"YYYY-MM-DD","description":"verbatim row text","amount":number,"direction":"in or out","status":"posted or pending"}]}
+{"asOf":"the newest transaction date","postedBalance":number|null,"availableBalance":number|null,"transactions":[{"date":"exactly as printed, e.g. 09/02/2026","description":"the bold merchant/description line only","amount":number,"direction":"in"|"out","status":"posted"|"pending"}]}
+
+The screen layout, per transaction row:
+- LEFT: a description (1-2 lines) with a date like "09/02/2026" underneath it.
+- RIGHT: the transaction amount on top (GREEN with no minus = money IN; RED with a leading "-" = money OUT), and BELOW it a smaller grey line "Total Balance: $X". That "Total Balance:" line is the running account balance AFTER that transaction — it is NOT a transaction. NEVER emit a transaction for a "Total Balance" figure.
 
 Rules:
-- Include EVERY transaction row visible, in the order shown. Do not summarize or skip.
-- amount is always a positive number. Use "direction":"out" for withdrawals/debits/payments/fees (minus sign, parentheses, or red text) and "direction":"in" for deposits/credits.
-- Read digits exactly: "$1,257.00" -> 1257, "$278.07" -> 278.07.
-- Balances and amounts are dollar figures with cents and usually a "$". A masked account number like "...4821", "x4821" or "ending 4821" is NOT a balance — ignore it.
-- "postedBalance" is the balance labelled Current, Present, Posted, or Ledger; "availableBalance" is the one labelled Available. Either may be absent — use null, do not guess one from the other.
-- A row is "status":"pending" if it is under a "Pending" / "Processing" heading OR labelled pending; every other row is "posted". If there is no pending section, all rows are "posted".
-- Most rows show only month and day. Use the year from "today" above; if that puts the date in the future, use the previous year. Never use a year more than one year before today.
-- If you cannot read a value, use null. Never invent a transaction, a date, or a number that is not visible in the image.`;
+- One JSON object per transaction row. Include every row, in the order shown, from both the "Pending" and "Posted" sections.
+- "amount" is the top-right figure only, as a positive number. "$278.07" -> 278.07, "-$1,046.06" -> 1046.06, "-$17.81" -> 17.81 (keep the cents — never drop the decimal point).
+- "direction": "out" if the amount is red or has a leading "-", else "in".
+- "description": just the main line (e.g. "ACCOUNTANTSWORLD PAYROLL", "HC CIGARS DAYTONA", "MTBMERCHANT DEPOSIT"). Do not include the "Total Balance" text.
+- "status": "pending" for rows under the "Pending" header, "posted" for rows under "Posted".
+- Balances: the two big numbers at the top. "postedBalance" = the one labelled "Total Balance"; "availableBalance" = the one labelled "Available Balance". A number in parentheses after the account name (e.g. "(2708)") is an account number, not a balance.
+- If a value is genuinely unreadable use null. Never invent a row, a date, or a number.`;
 
 function jsonResponse(obj, status = 200) {
   return new Response(JSON.stringify(obj), {
@@ -120,17 +123,39 @@ function dataUrlToBytes(dataUrl) {
   return arr;
 }
 
-// The Llama 3.2 Vision binding takes `image` as an array of byte values.
+// Different Workers AI vision models want the image in different shapes:
+//  - Llama 4 Scout / most modern models: OpenAI-style content parts with image_url
+//  - Llama 3.2 Vision: a top-level `image` as an array of byte values
+// Try the modern shape first, fall back to the legacy one.
 async function runVision(env, model, dataUrl, today) {
-  return env.AI.run(model, {
-    messages: [
-      { role: "system", content: extractSystem(today) },
-      { role: "user", content: "Extract this bank screenshot to JSON now." },
-    ],
-    image: [...dataUrlToBytes(dataUrl)],
-    max_tokens: 2048,
-    temperature: 0,
-  });
+  const sys = extractSystem(today);
+  try {
+    return await env.AI.run(model, {
+      messages: [
+        { role: "system", content: sys },
+        {
+          role: "user",
+          content: [
+            { type: "text", text: "Extract this bank screenshot to JSON now." },
+            { type: "image_url", image_url: { url: dataUrl } },
+          ],
+        },
+      ],
+      max_tokens: 4096,
+      temperature: 0,
+    });
+  } catch (e) {
+    if (isAgreementError(e)) throw e;
+    return env.AI.run(model, {
+      messages: [
+        { role: "system", content: sys },
+        { role: "user", content: "Extract this bank screenshot to JSON now." },
+      ],
+      image: [...dataUrlToBytes(dataUrl)],
+      max_tokens: 4096,
+      temperature: 0,
+    });
+  }
 }
 
 async function visionWithAgree(env, model, dataUrl, today) {
@@ -184,16 +209,32 @@ function cleanStr(v) {
   const s = v.trim();
   return s && !/^(null|none|n\/a|undefined)$/i.test(s) ? s : null;
 }
-function cleanDate(v) {
-  const s = cleanStr(v);
-  return s && /^\d{4}-\d{2}-\d{2}$/.test(s) ? s : null;
+const MONTHS = { jan: 1, feb: 2, mar: 3, apr: 4, may: 5, jun: 6, jul: 7, aug: 8, sep: 9, sept: 9, oct: 10, nov: 11, dec: 12 };
+
+// Accept the many date shapes a bank UI / model produces and return YYYY-MM-DD
+// (year may be missing/wrong — repairYear fixes that next).
+function cleanDate(v, today) {
+  let s = cleanStr(v);
+  if (!s) return null;
+  s = s.trim();
+  let m, y, mo, d;
+  if ((m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/))) { y = +m[1]; mo = +m[2]; d = +m[3]; }
+  else if ((m = s.match(/^(\d{1,2})[/\-.](\d{1,2})(?:[/\-.](\d{2,4}))?/))) {
+    mo = +m[1]; d = +m[2]; y = m[3] ? +m[3] : null;
+    if (y != null && y < 100) y += 2000;
+  } else if ((m = s.match(/([A-Za-z]{3,9})\.?\s+(\d{1,2})(?:,?\s+(\d{4}))?/))) {
+    mo = MONTHS[m[1].toLowerCase().slice(0, m[1].toLowerCase() === "sept" ? 4 : 3)]; d = +m[2]; y = m[3] ? +m[3] : null;
+  } else return null;
+  if (!mo || mo > 12 || !d || d > 31) return null;
+  if (y == null) y = today ? Number(today.slice(0, 4)) : new Date().getUTCFullYear();
+  return `${y}-${String(mo).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
 }
 
-// Llama routinely stamps the wrong YEAR on a row it otherwise read fine (it
-// only sees month + day). Snap the year to whichever of last year / this year
-// puts the date closest to today without landing in the future.
+// Models routinely stamp the wrong YEAR on a row they otherwise read fine (they
+// often only see month + day). Snap the year to whichever of last year / this
+// year puts the date closest to today without landing in the future.
 function repairYear(dateStr, today) {
-  const d = cleanDate(dateStr);
+  const d = cleanDate(dateStr, today);
   if (!d || !today) return d;
   const t = Date.parse(today + "T12:00:00");
   let best = d, bestGap = Infinity;
@@ -224,6 +265,11 @@ function mergeExtractions(pages, today) {
       if (!t) continue;
       const amt = cleanNum(t.amount);
       if (amt == null) continue;
+      const desc = String(t.description || "").trim();
+      // Guard against the model emitting the "Total Balance: $X" running-balance
+      // line (or a bare number) as if it were a transaction.
+      if (/total\s*balance|running\s*balance|available\s*balance/i.test(desc)) continue;
+      if (!desc || /^[\s$0-9,.\-()]+$/.test(desc)) continue;
       const abs = Math.abs(amt);
       const dir = t.direction === "in" || (t.direction == null && amt > 0) ? "in" : "out";
       const date = repairYear(t.date, today) || "";
@@ -232,7 +278,7 @@ function mergeExtractions(pages, today) {
       seen.add(key);
       transactions.push({
         date,
-        description: String(t.description || "").trim(),
+        description: desc,
         amount: abs,
         direction: dir,
         status: t.status === "pending" ? "pending" : "posted",
