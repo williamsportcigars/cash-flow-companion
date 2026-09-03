@@ -42,14 +42,16 @@ function summarizeState(state) {
 //
 // Two OCR engines:
 //  1. Claude (Anthropic Messages API) — used when the ANTHROPIC_API_KEY secret
-//     is set. Accurate enough to trust with financial figures. ~$0.003/screenshot,
-//     billed pay-as-you-go to an Anthropic Console account (NOT a Claude.ai
-//     subscription). This is the recommended setup.
+//     is set. Accurate enough to trust with financial figures. Roughly a penny
+//     or two per screenshot on Sonnet, billed pay-as-you-go to an Anthropic
+//     Console account (NOT a Claude.ai subscription). This is the recommended
+//     setup. Drop CLAUDE_MODEL to "claude-haiku-4-5" to cut the cost ~4x if
+//     accuracy holds on your statements.
 //  2. Cloudflare Workers AI (Llama 3.2 11B Vision) — the free fallback when no
 //     key is set. Reads clean screenshots OK but is unreliable on dense real
 //     bank statements (drops decimals, confuses the running-balance line for a
 //     transaction). Kept so the feature works with zero setup, with caveats.
-const CLAUDE_MODEL = "claude-haiku-4-5";
+const CLAUDE_MODEL = "claude-sonnet-5";
 const RECONCILE_MODEL = "@cf/meta/llama-3.2-11b-vision-instruct";
 const MAX_IMAGES = 6;
 const MAX_IMAGE_CHARS = 3_500_000; // base64 length, ~2.6MB decoded, after client downscale
