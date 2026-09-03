@@ -35,6 +35,7 @@
 .recGroupHead{font-size:10px;text-transform:uppercase;letter-spacing:.16em;color:var(--mint);font-weight:700;margin:16px 0 7px}
 .recRow{display:grid;grid-template-columns:96px minmax(0,1.4fr) 110px minmax(0,1fr) minmax(0,1fr);gap:9px;align-items:start;padding:10px 0;border-bottom:1px solid var(--line)}.recRow:last-child{border-bottom:0}.recRow.ignored{opacity:.4}.recRow input,.recRow select{width:100%;padding:7px;border:1px solid rgba(37,159,138,.3);border-radius:6px;background:var(--black);color:var(--warm-white);font:inherit;font-family:"Josefin Sans",sans-serif;font-size:12px}.recRow .recDate input{font-family:"DM Mono",monospace}.recMatchNote{font-size:10.5px;color:var(--dim);font-family:"DM Mono",monospace;margin-top:4px;grid-column:2/-1}
 .recChip{display:inline-block;font-size:9px;letter-spacing:.06em;padding:3px 7px;border-radius:20px;font-weight:700;font-family:"Josefin Sans",sans-serif;margin-top:6px}.recChip.confirm{background:rgba(37,159,138,.16);color:var(--mint)}.recChip.add{background:rgba(201,168,76,.18);color:var(--gold-light)}.recChip.unposted{background:var(--warn-bg);color:var(--warn-text)}
+.recPend{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--dim);margin-top:5px}.recPend input{width:auto!important;margin:0}
 @media(max-width:760px){.recRow{grid-template-columns:1fr;gap:6px}.recMatchNote{grid-column:1/-1}.recHeader{grid-template-columns:1fr}.mast{align-items:flex-start;flex-direction:column}.grid{grid-template-columns:1fr}.formgrid{grid-template-columns:1fr 1fr}.event{grid-template-columns:70px minmax(0,1fr) 105px 26px 24px 22px;gap:7px;padding:11px 9px}.delBtn{width:22px;height:22px;font-size:12px}.desc{font-size:13px}.note{font-size:10px}.amt{font-size:12px}.startInput{width:145px;font-size:22px}.weekHead{padding:11px 12px}.wrap{padding:15px 10px 45px}.moveBtn{width:24px;height:15px;font-size:8px}.acctTab{padding:7px 12px;font-size:12px}}
 </style>
 </head>
@@ -943,7 +944,8 @@ function recRowHtml(r,events){
     }
   }
   return '<div class="recRow'+(r.action==="ignore"?" ignored":"")+'" data-rec="'+r.i+'">'+
-    '<div class="recDate"><input type="date" data-recfield="date" value="'+esc(r.date)+'">'+chip+'</div>'+
+    '<div class="recDate"><input type="date" data-recfield="date" value="'+esc(r.date)+'">'+chip+
+      '<label class="recPend"><input type="checkbox" data-recfield="pending"'+(r.status==="pending"?" checked":"")+'> pending at bank</label></div>'+
     '<div class="recDesc"><input type="text" data-recfield="desc" value="'+esc(r.desc)+'"></div>'+
     '<div><input type="text" inputmode="decimal" data-recfield="amount" value="'+r.amount.toFixed(2)+'"><select data-recfield="direction" style="margin-top:4px"><option value="in"'+(r.direction==="in"?" selected":"")+'>money in</option><option value="out"'+(r.direction==="out"?" selected":"")+'>money out</option></select></div>'+
     '<div><select data-recfield="category">'+REC_CATEGORIES.map(c=>'<option'+(c===r.category?" selected":"")+'>'+c+'</option>').join("")+'</select></div>'+
@@ -973,6 +975,7 @@ function wireReconcile(){
         if(f==="amount"){let n=recNum(inp.value);r.amount=Number.isFinite(n)?Math.abs(n):0;renderRecBalance();}
         else if(f==="desc"){r.desc=inp.value;}
         else if(f==="category"){r.category=inp.value;}
+        else if(f==="pending"){r.status=inp.checked?"pending":"posted";renderReconcile();}
         else if(f==="direction"){r.direction=inp.value;renderReconcile();}
         else if(f==="date"){r.date=recValidDate(inp.value)?inp.value:r.date;renderReconcile();}
         else if(f==="action"){

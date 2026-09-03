@@ -60,9 +60,10 @@ Rules:
 - Include EVERY transaction row visible, in the order shown. Do not summarize or skip.
 - amount is always a positive number. Use "direction":"out" for withdrawals/debits/payments/fees (minus sign, parentheses, or red text) and "direction":"in" for deposits/credits.
 - Read digits exactly: "$1,257.00" -> 1257, "$278.07" -> 278.07.
-- "postedBalance" is the Current/Present/Posted balance; "availableBalance" is the Available balance. Either may be missing.
-- Rows under a "Pending" heading get "status":"pending"; all others "posted".
-- If the year is not shown, assume the most recent year that makes the date not in the future.
+- Balances and amounts are dollar figures with cents and usually a "$". A masked account number like "...4821", "x4821" or "ending 4821" is NOT a balance — ignore it.
+- "postedBalance" is the balance labelled Current, Present, Posted, or Ledger; "availableBalance" is the one labelled Available. Either may be absent — use null, do not guess one from the other.
+- A row is "status":"pending" if it is under a "Pending" / "Processing" heading OR labelled pending; every other row is "posted". If there is no pending section, all rows are "posted".
+- If the year is not shown, assume the most recent year that keeps the date in the past.
 - If you cannot read a value, use null. Never invent a transaction or a number.`;
 
 function jsonResponse(obj, status = 200) {
@@ -151,6 +152,24 @@ function normDesc(s) {
   return String(s || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim().slice(0, 48);
 }
 
+// Models sometimes emit the string "null"/"none"/"" or a formatted number
+// like "$3,086.89" — coerce those to a real number or null.
+function cleanNum(v) {
+  if (typeof v === "number") return Number.isFinite(v) ? v : null;
+  if (typeof v !== "string") return null;
+  const n = parseFloat(v.replace(/[$,\s]/g, ""));
+  return Number.isFinite(n) ? n : null;
+}
+function cleanStr(v) {
+  if (typeof v !== "string") return null;
+  const s = v.trim();
+  return s && !/^(null|none|n\/a|undefined)$/i.test(s) ? s : null;
+}
+function cleanDate(v) {
+  const s = cleanStr(v);
+  return s && /^\d{4}-\d{2}-\d{2}$/.test(s) ? s : null;
+}
+
 // Combine per-screenshot results into one transaction list, dropping rows that
 // appear on more than one screenshot (overlapping scroll positions).
 function mergeExtractions(pages) {
@@ -159,21 +178,23 @@ function mergeExtractions(pages) {
   let asOf = null, postedBalance = null, availableBalance = null;
   for (const p of pages) {
     if (!p || !Array.isArray(p.transactions)) continue;
-    if (p.asOf && (!asOf || String(p.asOf) > asOf)) asOf = String(p.asOf);
-    if (postedBalance == null && typeof p.postedBalance === "number") postedBalance = p.postedBalance;
-    if (availableBalance == null && typeof p.availableBalance === "number") availableBalance = p.availableBalance;
+    const pAsOf = cleanDate(p.asOf);
+    if (pAsOf && (!asOf || pAsOf > asOf)) asOf = pAsOf;
+    if (postedBalance == null) postedBalance = cleanNum(p.postedBalance);
+    if (availableBalance == null) availableBalance = cleanNum(p.availableBalance);
     for (const t of p.transactions) {
-      if (!t || t.amount == null) continue;
-      const amt = Math.abs(Number(t.amount));
-      if (!Number.isFinite(amt)) continue;
-      const dir = t.direction === "in" ? "in" : "out";
-      const key = [String(t.date || ""), amt.toFixed(2), dir, normDesc(t.description)].join("|");
+      if (!t) continue;
+      const amt = cleanNum(t.amount);
+      if (amt == null) continue;
+      const abs = Math.abs(amt);
+      const dir = t.direction === "in" || (t.direction == null && amt > 0) ? "in" : "out";
+      const key = [cleanDate(t.date) || "", abs.toFixed(2), dir, normDesc(t.description)].join("|");
       if (seen.has(key)) continue;
       seen.add(key);
       transactions.push({
-        date: String(t.date || ""),
+        date: cleanDate(t.date) || "",
         description: String(t.description || "").trim(),
-        amount: amt,
+        amount: abs,
         direction: dir,
         status: t.status === "pending" ? "pending" : "posted",
       });
