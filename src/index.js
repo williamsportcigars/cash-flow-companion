@@ -40,18 +40,21 @@ function summarizeState(state) {
 // the calendar and only writes through the normal PUT /api/state (which
 // snapshots history) once the user reviews and applies.
 //
-// Model: Llama 3.2 11B Vision is well documented for image->text on the binding
-// and strong at reading dense tables. It needs a one-time Meta license
-// acceptance per account (handled lazily below, or by opening the model once in
-// the Workers AI Playground). Swap RECONCILE_MODEL for a no-license-gate option
-// if needed: "@cf/mistralai/mistral-small-3.1-24b-instruct" or
-// "@cf/moondream/moondream3.1-9B-A2B". The client may also override per request
-// with a "model" field while we tune.
+// Two OCR engines:
+//  1. Claude (Anthropic Messages API) — used when the ANTHROPIC_API_KEY secret
+//     is set. Accurate enough to trust with financial figures. ~$0.003/screenshot,
+//     billed pay-as-you-go to an Anthropic Console account (NOT a Claude.ai
+//     subscription). This is the recommended setup.
+//  2. Cloudflare Workers AI (Llama 3.2 11B Vision) — the free fallback when no
+//     key is set. Reads clean screenshots OK but is unreliable on dense real
+//     bank statements (drops decimals, confuses the running-balance line for a
+//     transaction). Kept so the feature works with zero setup, with caveats.
+const CLAUDE_MODEL = "claude-haiku-4-5";
 const RECONCILE_MODEL = "@cf/meta/llama-3.2-11b-vision-instruct";
 const MAX_IMAGES = 6;
 const MAX_IMAGE_CHARS = 3_500_000; // base64 length, ~2.6MB decoded, after client downscale
 
-const VISION_PASSES = 1; // reads per screenshot (union of the passes)
+const VISION_PASSES = 2; // Workers-AI reads per screenshot (results unioned)
 
 function extractSystem(today) {
   return `Today is ${today}. ` + EXTRACT_SYSTEM;
@@ -122,70 +125,88 @@ function dataUrlToBytes(dataUrl) {
   return arr;
 }
 
-// Llama 3.2 Vision wants a top-level `image` byte array; newer multimodal
-// models (Llama 4, GLM, Qwen) want OpenAI-style content parts with image_url.
-async function runVision(env, model, dataUrl, today) {
-  const sys = extractSystem(today);
-  const ask = "Extract this bank screenshot to JSON now.";
-  if (/llama-3\.2/.test(model)) {
-    return env.AI.run(model, {
-      messages: [
-        { role: "system", content: sys },
-        { role: "user", content: ask },
-      ],
-      image: [...dataUrlToBytes(dataUrl)],
+function mediaType(dataUrl) {
+  const m = dataUrl.match(/^data:(image\/[a-z]+);base64,/i);
+  return m ? m[1] : "image/jpeg";
+}
+
+// --- Engine 1: Claude Messages API ---
+async function runClaude(env, dataUrl, today) {
+  const res = await fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: {
+      "x-api-key": env.ANTHROPIC_API_KEY,
+      "anthropic-version": "2023-06-01",
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({
+      model: CLAUDE_MODEL,
       max_tokens: 4096,
-      temperature: 0,
-    });
-  }
-  return env.AI.run(model, {
-    messages: [
-      { role: "system", content: sys },
-      {
+      system: extractSystem(today),
+      messages: [{
         role: "user",
         content: [
-          { type: "text", text: ask },
-          { type: "image_url", image_url: { url: dataUrl } },
+          { type: "image", source: { type: "base64", media_type: mediaType(dataUrl), data: dataUrl.slice(dataUrl.indexOf(",") + 1) } },
+          { type: "text", text: "Extract this bank screenshot to JSON now." },
         ],
-      },
-    ],
-    max_tokens: 4096,
-    temperature: 0,
+      }],
+    }),
   });
+  if (!res.ok) throw new Error(`Claude API ${res.status}: ${(await res.text().catch(() => "")).slice(0, 200)}`);
+  const data = await res.json();
+  return (data.content || []).filter((c) => c.type === "text").map((c) => c.text).join("");
 }
 
-async function visionWithAgree(env, model, dataUrl, today) {
+// --- Engine 2: Workers AI (Llama 3.2 Vision) ---
+async function runWorkersAI(env, model, dataUrl, today) {
+  const call = () => env.AI.run(model, {
+    messages: [
+      { role: "system", content: extractSystem(today) },
+      { role: "user", content: "Extract this bank screenshot to JSON now." },
+    ],
+    image: [...dataUrlToBytes(dataUrl)],
+    max_tokens: 2048,
+    temperature: 0,
+  });
   try {
-    return await runVision(env, model, dataUrl, today);
+    return pickModelText(await call());
   } catch (e) {
     if (!isAgreementError(e)) throw e;
-    try {
-      await env.AI.run(model, { prompt: "agree" }); // one-time Meta license accept
-    } catch {
-      // fall through to the retry; if it still fails the caller surfaces it
-    }
-    return runVision(env, model, dataUrl, today);
+    try { await env.AI.run(model, { prompt: "agree" }); } catch {}
+    return pickModelText(await call());
   }
 }
 
-// Read one screenshot VISION_PASSES times and union the transactions — one
-// pass frequently drops a row that another pass reads fine.
+// Read one screenshot and return {extraction, raws[]}. Claude: one call.
+// Workers AI: VISION_PASSES calls, unioned (one pass often drops a row).
 async function readImage(env, model, dataUrl, today) {
+  const useClaude = !!env.ANTHROPIC_API_KEY;
+  const n = useClaude ? 1 : VISION_PASSES;
   const runs = await Promise.allSettled(
-    Array.from({ length: VISION_PASSES }, () => visionWithAgree(env, model, dataUrl, today))
+    Array.from({ length: n }, () =>
+      useClaude ? runClaude(env, dataUrl, today) : runWorkersAI(env, model, dataUrl, today)
+    )
   );
   const parsed = [];
+  const raws = [];
   let lastErr = null;
   for (const r of runs) {
     if (r.status === "fulfilled") {
-      const p = extractJson(pickModelText(r.value));
+      raws.push(String(r.value || "").slice(0, 600));
+      const p = extractJson(r.value);
       if (p && Array.isArray(p.transactions)) parsed.push(p);
     } else {
       lastErr = r.reason;
+      raws.push("ERROR: " + String((r.reason && r.reason.message) || r.reason).slice(0, 300));
     }
   }
-  if (!parsed.length) throw lastErr || new Error("could not read this screenshot");
-  return mergeExtractions(parsed, today); // union of the passes for this one image
+  if (!parsed.length) {
+    const err = new Error("couldn't read a transaction list from this screenshot");
+    err.raws = raws;
+    if (lastErr) err.cause = lastErr;
+    throw err;
+  }
+  return { extraction: mergeExtractions(parsed, today), raws };
 }
 
 function normDesc(s) {
@@ -286,9 +307,9 @@ function mergeExtractions(pages, today) {
 }
 
 async function handleReconcile(request, env) {
-  if (!env.AI) {
+  if (!env.AI && !env.ANTHROPIC_API_KEY) {
     return jsonResponse(
-      { error: "The vision model isn't enabled on this deployment yet (missing AI binding)." },
+      { error: "No OCR engine is configured (missing AI binding and ANTHROPIC_API_KEY)." },
       503
     );
   }
@@ -313,24 +334,29 @@ async function handleReconcile(request, env) {
   }
   const model = typeof body.model === "string" && body.model.trim() ? body.model.trim() : RECONCILE_MODEL;
   const today = new Date().toISOString().slice(0, 10);
+  const engine = env.ANTHROPIC_API_KEY ? "claude" : "workers-ai";
+  const debug = body.debug === true;
 
+  const extractions = [];
   const pages = [];
   const warnings = [];
   for (let i = 0; i < images.length; i++) {
     try {
-      pages.push(await readImage(env, model, images[i], today));
+      const { extraction, raws } = await readImage(env, model, images[i], today);
+      extractions.push(extraction);
+      pages.push(debug ? { ...extraction, raws } : extraction);
     } catch (e) {
       const msg = String((e && e.message) || e).slice(0, 200);
       warnings.push(
         isAgreementError(e)
-          ? `Screenshot ${i + 1}: the vision model needs a one-time license acceptance — open ${RECONCILE_MODEL} once in the Cloudflare Workers AI Playground and accept Meta's terms, then retry.`
-          : `Screenshot ${i + 1}: couldn't read it (${msg}).`
+          ? `Screenshot ${i + 1}: the Workers AI vision model needs a one-time license acceptance — open ${RECONCILE_MODEL} once in the Cloudflare Workers AI Playground and accept Meta's terms, then retry.`
+          : `Screenshot ${i + 1}: ${msg}`
       );
-      pages.push({ error: msg });
+      pages.push(debug ? { error: msg, raws: (e && e.raws) || [] } : { error: msg });
     }
   }
 
-  return jsonResponse({ ...mergeExtractions(pages, today), pages, warnings, model, today });
+  return jsonResponse({ ...mergeExtractions(extractions, today), pages, warnings, engine, model: engine === "claude" ? CLAUDE_MODEL : model, today });
 }
 
 // Snapshot whatever is currently saved for this user into cashflow_history
